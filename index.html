@@ -1,0 +1,1058 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bài tiểu luận Nhóm 4</title>
+<meta name="description" content="Bàn luyện viết cho bài tổng quan tài liệu AI trong y tế: viết bằng lời của chính bạn, Claude chấm và gợi mở dựa trên 19 nguồn nghiên cứu và quy ước của nhóm.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#eef2ef; --surface:#ffffff; --surface-2:#e2eae6; --surface-3:#d7e1dc;
+    --ink:#132420; --muted:#55655f; --line:#c9d5cf;
+    --accent:#1f6f5c; --accent-ink:#ffffff; --accent-soft:#dcece6;
+    --accent2:#3457c9; --accent2-soft:#e1e7fb;
+    --warn:#a3631a; --warn-soft:#f3e6d4;
+    --good:#1f7a4d; --good-soft:#dcf0e3;
+    --shadow: 0 1px 2px rgba(19,36,32,.06), 0 8px 24px -12px rgba(19,36,32,.18);
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d1512; --surface:#152420; --surface-2:#1b2e28; --surface-3:#22392f;
+      --ink:#e3ede8; --muted:#93a69d; --line:#28423a;
+      --accent:#57d9ac; --accent-ink:#07231a; --accent-soft:#173a2c;
+      --accent2:#8fa9ff; --accent2-soft:#1c2748;
+      --warn:#e0ac5f; --warn-soft:#3a2c17;
+      --good:#6bd99a; --good-soft:#163526;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d1512; --surface:#152420; --surface-2:#1b2e28; --surface-3:#22392f;
+    --ink:#e3ede8; --muted:#93a69d; --line:#28423a;
+    --accent:#57d9ac; --accent-ink:#07231a; --accent-soft:#173a2c;
+    --accent2:#8fa9ff; --accent2-soft:#1c2748;
+    --warn:#e0ac5f; --warn-soft:#3a2c17;
+    --good:#6bd99a; --good-soft:#163526;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px -12px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); font-family:var(--font-body); line-height:1.5; margin:0;}
+  ::selection{background:var(--accent-soft);}
+
+  .shell{max-width:1440px; margin:0 auto;}
+
+  /* Top bar */
+  .topbar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:14px 20px; background:var(--surface); border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex; align-items:baseline; gap:8px; margin-right:auto;}
+  .brand .mark{font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:.08em;
+    background:var(--accent); color:var(--accent-ink); padding:3px 7px; border-radius:5px;}
+  .brand h1{font-family:var(--font-display); font-weight:600; font-size:19px; margin:0;}
+  .brand .sub{font-size:12px; color:var(--muted);}
+  .view-toggle{display:flex; background:var(--surface-2); border:1px solid var(--line); border-radius:9px; padding:3px; gap:2px;}
+  .view-toggle button{font-family:var(--font-body); font-size:12.5px; font-weight:600; color:var(--muted);
+    background:transparent; border:0; border-radius:6px; padding:6px 11px; cursor:pointer;}
+  .view-toggle button.active{background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08);}
+  .progress-pill{display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:12px;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:5px 12px 5px 6px;}
+  .progress-pill .ring{width:20px; height:20px; border-radius:50%;
+    background: conic-gradient(var(--accent) calc(var(--pct,0)*1%), var(--surface-3) 0);}
+  .btn-mode{background:transparent; border:1px solid var(--line); border-radius:8px; padding:6px 9px; cursor:pointer; color:var(--muted); font-size:13px;}
+
+  /* Layout */
+  .body-row{display:flex; width:100%;}
+  nav.outline{width:320px; flex:none; border-right:1px solid var(--line); background:var(--surface);
+    padding:16px 10px 40px; overflow-y:auto; max-height:calc(100vh - 60px); position:sticky; top:60px; align-self:flex-start;}
+  .chuong-group{margin-bottom:6px;}
+  .chuong-head{display:flex; align-items:center; gap:8px; width:100%; text-align:left; background:none; border:0;
+    font-family:var(--font-body); font-weight:600; font-size:12.5px; color:var(--ink);
+    padding:9px 8px; border-radius:8px; cursor:pointer; line-height:1.35;}
+  .chuong-head:hover{background:var(--surface-2);}
+  .chuong-head .chev{font-size:10px; color:var(--muted); flex:none;}
+  .chuong-head[aria-expanded="false"] .chev{transform:rotate(-90deg);}
+  .sec-list{padding-left:6px;}
+  .sec-btn{display:flex; align-items:center; gap:8px; width:100%; text-align:left; background:none; border:0;
+    font-family:var(--font-body); font-size:12.5px; color:var(--muted);
+    padding:7px 10px 7px 18px; border-radius:7px; cursor:pointer; border-left:2px solid transparent; line-height:1.35;}
+  .sec-btn:hover{background:var(--surface-2); color:var(--ink);}
+  .sec-btn.active{background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent); font-weight:600;}
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--line); flex:none;}
+  .dot.done{background:var(--good);}
+  .dot.progress{background:var(--warn);}
+
+  main.stage{flex:1; padding:26px 30px 80px; min-width:0;}
+  .crumb{font-family:var(--font-mono); font-size:11.5px; color:var(--muted); letter-spacing:.04em; margin-bottom:6px;}
+  .stage h2{font-family:var(--font-display); font-size:28px; font-weight:600; margin:0 0 14px;}
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); margin-bottom:18px;}
+  .card h3{font-size:12.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 10px; font-weight:600;}
+  .brief{font-size:14.5px; line-height:1.6;}
+
+  .meta-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:14px;}
+  .meta-item{background:var(--surface-2); border-radius:9px; padding:9px 11px;}
+  .meta-item .k{font-size:10.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); font-weight:600;}
+  .meta-item .v{font-size:13.5px; margin-top:2px;}
+  .note-line{display:flex; gap:9px; background:var(--warn-soft); border-radius:9px; padding:10px 12px; font-size:13px; margin-top:14px; line-height:1.5;}
+
+  .src-list{display:grid; gap:10px;}
+  .src-item{background:var(--surface-2); border-radius:10px; padding:11px 13px;}
+  .src-head{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:5px;}
+  .src-label{font-weight:600; font-size:13.5px;}
+  .src-tag{font-family:var(--font-mono); font-size:10px; padding:2px 7px; border-radius:99px; background:var(--accent2-soft); color:var(--accent2);}
+  .src-tag.vn{background:var(--good-soft); color:var(--good);}
+  .src-method{font-size:12.5px; color:var(--muted); line-height:1.5;}
+  .src-find{font-size:13px; line-height:1.55; margin-top:5px;}
+
+  .rubric{list-style:none; padding:0; margin:0; display:grid; gap:7px;}
+  .rubric li{display:flex; gap:9px; font-size:13.5px; align-items:flex-start; line-height:1.5;}
+  .rubric li .idx{font-family:var(--font-mono); font-size:11px; color:var(--accent2); background:var(--accent2-soft);
+    border-radius:5px; padding:1px 6px; flex:none; margin-top:2px;}
+
+  .guide-item{background:var(--accent2-soft); border-radius:10px; padding:12px 14px; margin-bottom:10px;}
+  .guide-item:last-child{margin-bottom:0;}
+  .guide-item .gt{font-weight:600; font-size:13.5px; margin-bottom:5px;}
+  .guide-item .gb{font-size:13px; line-height:1.6;}
+
+  textarea{width:100%; min-height:240px; resize:vertical; font-family:var(--font-body); font-size:14.5px;
+    line-height:1.6; color:var(--ink); background:var(--surface-2); border:1px solid var(--line);
+    border-radius:10px; padding:14px; outline:none;}
+  textarea:focus{border-color:var(--accent);}
+  .wordcount{font-family:var(--font-mono); font-size:11.5px; color:var(--muted); margin-top:6px; text-align:right;}
+  .actions{display:flex; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap;}
+  button.primary{font-family:var(--font-body); font-weight:600; font-size:13.5px; color:var(--accent-ink);
+    background:var(--accent); border:0; border-radius:9px; padding:10px 18px; cursor:pointer;}
+  button.primary:disabled{opacity:.55; cursor:default;}
+  button.primary:hover:not(:disabled){filter:brightness(1.06);}
+  button.ghost{font-family:var(--font-body); font-weight:600; font-size:12.5px; color:var(--muted);
+    background:transparent; border:1px solid var(--line); border-radius:9px; padding:9px 14px; cursor:pointer;}
+  button.ghost:hover{color:var(--ink);}
+  .feedback{border-top:3px solid var(--accent2);}
+  .fb-head{display:flex; align-items:center; gap:14px; margin-bottom:14px; flex-wrap:wrap;}
+  .score-ring{width:56px; height:56px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center;
+    background: conic-gradient(var(--accent2) calc(var(--sc,0)*10%), var(--surface-3) 0);}
+  .score-ring span{width:44px; height:44px; border-radius:50%; background:var(--surface); display:flex; align-items:center;
+    justify-content:center; font-family:var(--font-mono); font-weight:600; font-size:15px;}
+  .fb-title{font-weight:600; font-size:14.5px;}
+  .fb-sub{font-size:12px; color:var(--muted);}
+  .crit-row{display:flex; align-items:center; gap:10px; font-size:13px; padding:6px 0; border-bottom:1px dashed var(--line);}
+  .crit-row:last-child{border-bottom:0;}
+  .crit-name{flex:1; min-width:0;}
+  .crit-bar{width:90px; height:6px; border-radius:99px; background:var(--surface-3); overflow:hidden; flex:none;}
+  .crit-bar i{display:block; height:100%; background:var(--accent2);}
+  .crit-score{font-family:var(--font-mono); font-size:12px; width:34px; text-align:right; flex:none;}
+  .fb-block{margin-top:14px;}
+  .fb-block h4{font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:0 0 8px;}
+  .fb-block ul{margin:0; padding-left:18px; font-size:13.5px; line-height:1.55; display:grid; gap:6px;}
+  .fb-block.strengths ul li::marker{color:var(--good);}
+  .fb-block.gaps ul li::marker{color:var(--warn);}
+  .fb-block.srcuse ul li::marker{color:var(--accent2);}
+  .hint-box{background:var(--accent2-soft); border-radius:9px; padding:10px 12px; font-size:13.5px; margin-top:12px; line-height:1.55;}
+
+  .empty-hint{color:var(--muted); font-size:13.5px; padding:10px 2px; line-height:1.6;}
+  .thinking{display:flex; align-items:center; gap:8px; color:var(--muted); font-size:13px; font-family:var(--font-mono);}
+  .spinner{width:13px; height:13px; border-radius:50%; border:2px solid var(--line); border-top-color:var(--accent2); animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @media (prefers-reduced-motion: reduce){ .spinner{animation:none;} }
+
+  /* Sources view */
+  .ov-summary{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px;}
+  .ov-stat{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 16px; box-shadow:var(--shadow); min-width:130px;}
+  .ov-stat .num{font-family:var(--font-display); font-size:26px; font-weight:600;}
+  .ov-stat .lbl{font-size:11.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em;}
+  .used-in{font-family:var(--font-mono); font-size:11px; color:var(--muted); margin-top:7px;}
+
+  footer.note{max-width:760px; font-size:12px; color:var(--muted); margin-top:26px; line-height:1.6;}
+
+  @media (max-width: 900px){
+    .body-row{flex-direction:column;}
+    nav.outline{width:100%; max-height:none; position:static; border-right:0; border-bottom:1px solid var(--line);}
+    main.stage{padding:20px 16px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <span class="mark">AI·YT</span>
+      <div>
+        <h1>Nhóm 4</h1>
+        <div class="sub">Tổng quan tài liệu — AI trong y tế</div>
+      </div>
+    </div>
+    <div class="view-toggle" id="viewToggle">
+      <button data-view="practice" class="active">Luyện viết</button>
+      <button data-view="sources">19 nguồn &amp; quy ước</button>
+    </div>
+    <div class="progress-pill" id="progressPill" title="Số đầu việc đã được chấm điểm">
+      <span class="ring" id="progressRing"></span>
+      <span id="progressText">0/38</span>
+    </div>
+    <button class="btn-mode" id="themeBtn" title="Đổi giao diện sáng/tối">◐</button>
+  </div>
+
+  <div class="body-row">
+    <nav class="outline" id="outlineNav" aria-label="Danh sách đầu việc"></nav>
+    <main class="stage" id="stage"></main>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     CƠ SỞ DỮ LIỆU TỰ THÂN CỦA ARTIFACT
+     - GUIDELINES: quy ước chung trích từ gop_y.docx (cập nhật khi nhóm gửi bản mới)
+     - SOURCES:    19 bài nghiên cứu trong thư mục "Nguồn tham khảo"
+     - OUTLINE:    38 đầu việc theo sheet "phan_cong_chi_tiet" của Phan_cong.xlsx
+     ============================================================ */
+
+  var GUIDELINES = [
+    {
+      id: "G1",
+      title: "Dùng đúng thuật ngữ: \"AI trong y tế\" là phạm vi chính, \"AI agent\" là một nhóm bên trong",
+      body: "Nhiều nghiên cứu nhóm thu thập nói về Machine Learning, Deep Learning, NLP, chatbot, hệ hỗ trợ quyết định và phân tích hình ảnh — những công nghệ này không đương nhiên là AI agent. Chỉ gọi là \"AI agent\" khi hệ thống trong nghiên cứu thực sự có khả năng: tự nhận biết/xác định nhiệm vụ, lập kế hoạch thực hiện, sử dụng công cụ hoặc dữ liệu, thực hiện quy trình nhiều bước, và tương tác với con người dưới sự giám sát. Nếu phạm vi bao quát mọi công nghệ AI thì lấy \"AI trong y tế\" làm phạm vi chính."
+    },
+    {
+      id: "G2",
+      title: "Không gọi H1/H2/H3 là giả thuyết nghiên cứu — gọi là \"mệnh đề phân tích\"",
+      body: "Đây là bài tổng quan tài liệu, nhóm không khảo sát sơ cấp và không kiểm định thống kê mới. Vì vậy không dùng các cụm \"giả thuyết được chấp nhận/bác bỏ\", \"kiểm định giả thuyết\". Nếu vẫn giữ H1, H2, H3 thì gọi là \"mệnh đề phân tích\" hoặc \"định hướng phân tích\", và đối chiếu chúng với bằng chứng đã công bố thay vì khẳng định đã kiểm định."
+    }
+  ];
+
+  /* ---------- 19 nguồn tham khảo ---------- */
+  var SOURCES = {
+    S1: { label: "Đại Trần Lê Vương (2025)", origin: "VN", group: "Tổng quan VN",
+          method: "Scoping review 37 nghiên cứu AI y tế Việt Nam, giai đoạn 2018–2024",
+          findings: "Chỉ khoảng 9% cơ sở y tế Việt Nam ứng dụng AI, so với hơn 70% ở nhóm nước phát triển. 46% nghiên cứu tập trung vào chẩn đoán hình ảnh; chỉ 11% về chatbot/trợ lý ảo; gần như 0% về vận hành nội bộ bệnh viện." },
+    S2: { label: "Đào Văn Dũng & Trần Quốc Thắng (2024)", origin: "VN", group: "Vận hành nội bộ",
+          method: "Bài tổng quan về Big Data và AI trong quản trị bệnh viện tại Việt Nam",
+          findings: "Phân tích tiềm năng của dữ liệu lớn và AI trong quản trị bệnh viện; nhấn mạnh hạ tầng dữ liệu phân mảnh và thiếu chuẩn hóa là rào cản nền tảng." },
+    S3: { label: "Nguyễn Phan Lâm Quỳnh và cộng sự (2025)", origin: "VN", group: "Trải nghiệm bệnh nhân",
+          method: "Khảo sát cắt ngang 613 bệnh nhân da liễu tại Huế",
+          findings: "Nhóm bệnh nhân đã từng dùng AI trong chăm sóc da liễu có thái độ tích cực hơn, tự tin hơn và phản đối mạnh hơn quan điểm AI thay thế hoàn toàn bác sĩ (p<0,05). Bằng chứng cho thấy tâm lý tiếp nhận của người bệnh không phải rào cản lớn nhất." },
+    S4: { label: "Nguyễn Thị Thu Thảo và cộng sự (2025)", origin: "VN", group: "Hỗ trợ bác sĩ",
+          method: "Mô hình học sâu CaraNet (CNN + Attention), đối chứng trên 200 ca CT ngực tại Bệnh viện Bạch Mai (phối hợp ĐHQG Hà Nội)",
+          findings: "Độ nhạy 90%, độ đặc hiệu 91%, độ chính xác 90% trong hỗ trợ chẩn đoán ung thư phổi — bằng chứng thực nghiệm định lượng đầu tiên trong nước ở mảng hỗ trợ bác sĩ." },
+    S5: { label: "Nguyễn Văn Điền & Nguyễn Thùy Trang (2025)", origin: "VN", group: "Tổng quan VN",
+          method: "Bài tổng quan về các ứng dụng AI trong chăm sóc sức khỏe",
+          findings: "Hệ thống hóa các nhóm ứng dụng AI trong y tế và điều kiện triển khai tại Việt Nam." },
+    S6: { label: "Tạ Thị Nguyệt Trang và cộng sự (2025)", origin: "VN", group: "Rào cản & chấp nhận",
+          method: "Khảo sát 573 nhân viên y tế tại các bệnh viện lớn ở Hà Nội; mô hình UTAUT mở rộng bằng biến \"perceived AI threat\"",
+          findings: "Cảm nhận bị AI đe dọa tác động âm đáng kể tới ý định ứng dụng AI, thậm chí làm suy yếu hiệu ứng tích cực của kỳ vọng hiệu suất và ảnh hưởng xã hội; mô hình giải thích 79,8% biến thiên ý định ứng dụng." },
+    S7: { label: "Chen và cộng sự (2026)", origin: "QT", group: "Trải nghiệm bệnh nhân",
+          method: "Phân tích gộp 7 nghiên cứu (6 thử nghiệm ngẫu nhiên có đối chứng) về chatbot AI hỗ trợ tuân thủ dùng thuốc ở bệnh mạn tính",
+          findings: "Cải thiện tuân thủ dùng thuốc có ý nghĩa thống kê, SMD = 0,69 (p=0,01). Chatbot tích hợp cả ba chức năng (nhắc nhở, giáo dục, hỏi đáp thời gian thực) hiệu quả hơn loại chỉ có hai chức năng." },
+    S8: { label: "Chennupati (2025)", origin: "QT", group: "Vận hành nội bộ",
+          method: "Đề xuất khung AIRA-Hospital: AI tạo sinh kết hợp tự động hóa quy trình bằng robot (RPA)",
+          findings: "Phân bổ nguồn lực cấp cứu theo thời gian thực, cải thiện thông lượng khoa cấp cứu và giảm tỷ lệ hủy lịch phẫu thuật." },
+    S9: { label: "Gaber và cộng sự (2025)", origin: "QT", group: "Hỗ trợ bác sĩ",
+          method: "Thử nghiệm quy trình LLM có tăng cường truy xuất (RAG) trên 2.000 ca bệnh từ cơ sở dữ liệu MIMIC",
+          findings: "Kết quả khả quan trong gợi ý chẩn đoán và phân luồng chuyên khoa; hiệu quả phụ thuộc vào chất lượng nguồn tri thức được truy xuất." },
+    S10: { label: "Hinostroza Fuentes và cộng sự (2025)", origin: "QT", group: "Nền tảng & đạo đức",
+          method: "Bài quan điểm về \"AI with agency\" trong y tế",
+          findings: "Chi phí y tế Mỹ chiếm 16,8% GDP; 73,2% người trưởng thành từng trì hoãn khám chữa bệnh vì gánh nặng hành chính. Nhấn mạnh AI có tác nhân chỉ bền vững khi đi kèm giám sát con người (human-in-the-loop), con người giữ quyền phê duyệt cuối với quyết định rủi ro cao." },
+    S11: { label: "Laus & Spagnuolo (2026)", origin: "QT", group: "Trải nghiệm bệnh nhân",
+          method: "Tổng quan hệ thống 6 nghiên cứu về chatbot AI trong chăm sóc điều dưỡng tại nhà",
+          findings: "Cải thiện theo dõi bệnh nhân, tuân thủ điều trị và giảm tải công việc điều dưỡng; đồng thời chỉ ra rào cản về đào tạo và mức độ chấp nhận của nhân viên y tế." },
+    S12: { label: "Liu và cộng sự (2025)", origin: "QT", group: "Nền tảng & đạo đức",
+          method: "Đề xuất kiến trúc nền tảng cho AI agent trong y tế (Cell Reports Medicine)",
+          findings: "AI agent y tế gồm bốn thành phần: Planning (lập kế hoạch), Action (thực thi), Reflection (diễn giải dữ liệu đa phương thức), Memory (ghi nhớ theo ngữ cảnh). Giới thiệu tầm nhìn \"AI Agent Hospital\" — nhiều agent chuyên biệt phối hợp dưới giám sát con người." },
+    S13: { label: "Ong và cộng sự (2025)", origin: "QT", group: "Hỗ trợ bác sĩ",
+          method: "Nghiên cứu LLM hỗ trợ quyết định lâm sàng về an toàn thuốc, thử nghiệm trên 16 chuyên khoa",
+          findings: "LLM giúp tăng độ chính xác khi rà soát đơn thuốc và hỗ trợ dược sĩ phát hiện sớm các vấn đề liên quan đến thuốc ở nhiều chuyên khoa khác nhau." },
+    S14: { label: "Perlis và cộng sự (2024)", origin: "QT", group: "Hỗ trợ bác sĩ",
+          method: "So sánh GPT-4 (có và không tăng cường bằng hướng dẫn điều trị) với bác sĩ lâm sàng cộng đồng trên các ca trầm cảm lưỡng cực",
+          findings: "GPT-4 tăng cường bằng hướng dẫn xác định đúng phác đồ tối ưu cho 50,8% ca, so với 23,0% khi không tăng cường và 23,1% ở nhóm bác sĩ cộng đồng." },
+    S15: { label: "Reis và cộng sự (2025)", origin: "QT", group: "Trải nghiệm bệnh nhân",
+          method: "Tổng quan tập trung (focused review) về công cụ AI hỗ trợ bệnh nhân tuân thủ dùng thuốc",
+          findings: "Các công cụ AI hỗ trợ bệnh nhân có tiềm năng cải thiện tuân thủ dùng thuốc; cần thiết kế phù hợp với năng lực số của người bệnh." },
+    S16: { label: "Shoaib và cộng sự (2026)", origin: "QT", group: "Vận hành nội bộ",
+          method: "Hệ thống AI-HRMS kết hợp giải thuật di truyền và Random Forest có khả năng diễn giải (SHAP) cho quản trị nhân sự bệnh viện",
+          findings: "Giảm 23% giờ làm thêm, tăng khoảng 5% mức hài lòng nhân sự, dự báo nhu cầu nhân lực đạt R² = 0,895." },
+    S17: { label: "Sumrall và cộng sự (2025)", origin: "QT", group: "Vận hành nội bộ",
+          method: "Triển khai hệ thống xếp lịch AI (Lightning Bolt) tại khoa Gây mê hồi sức, Ochsner Health",
+          findings: "Cải thiện mức độ hài lòng của bác sĩ và độ an toàn trong bàn giao ca mổ." },
+    S18: { label: "Wang và cộng sự (2026)", origin: "QT", group: "Vận hành nội bộ",
+          method: "Hệ thống quản trị nhân sự bệnh viện dựa trên AI: LSTM dự báo nhu cầu, XGBoost và Random Forest, tối ưu hóa nguyên hỗn hợp để xếp lịch trực",
+          findings: "Giảm 41% xung đột lịch trực, giảm 18% thời gian chờ của bệnh nhân, tăng 14% mức độ hài lòng; mô hình dự báo đạt R² = 0,91." },
+    S19: { label: "Xu và cộng sự (2026)", origin: "QT", group: "Nền tảng & đạo đức",
+          method: "Khảo sát tổng quan hơn 200 nghiên cứu về AI agent trong y tế",
+          findings: "Chia hệ sinh thái thành ba trụ cột: Perception (nhận thức dữ liệu lâm sàng đa phương thức), Agent Capabilities (dùng công cụ, suy luận, ghi nhớ, phối hợp đa tác tử) và Application Ecosystem (tổ chức theo vai trò: bác sĩ, bệnh nhân, nhà nghiên cứu, nhà quản trị)." }
+  };
+
+  /* ---------- 38 đầu việc theo sheet phan_cong_chi_tiet ---------- */
+  var OUTLINE = [
+    { ch: "Phần đầu", id: "0.1", stt: 1, title: "Tên đề tài",
+      task: "Chốt tên tiếng Việt, tên tiếng Anh và phạm vi nghiên cứu.",
+      output: "Tên đề tài chính thức", owner: "TV1", support: "TV3", week: "Tuần 1",
+      note: "Dùng thuật ngữ AI trong y tế nếu nguồn không tập trung riêng vào AI agent.",
+      src: ["S12", "S19", "S1"],
+      rubric: ["Tên phản ánh đúng phạm vi ba nhóm chủ thể: vận hành nội bộ, bệnh nhân, bác sĩ",
+        "Chọn thuật ngữ đúng theo quy ước G1 (AI trong y tế / AI agent), có lý do kèm theo",
+        "Có cả tên tiếng Việt và tiếng Anh, diễn đạt tương đương nhau",
+        "Phạm vi trong tên không rộng hơn những gì 19 nguồn thực sự bao phủ"] },
+
+    { ch: "Phần đầu", id: "0.2", stt: 2, title: "Tóm tắt và từ khóa",
+      task: "Viết tóm tắt gồm bối cảnh, mục tiêu, phương pháp, kết quả tổng hợp và kết luận.",
+      output: "Tóm tắt 200–300 từ, 5–7 từ khóa", owner: "TV10", support: "TV1", week: "Tuần 5",
+      note: "Hoàn thiện sau khi Chương 4 và Chương 5 đã thống nhất.",
+      src: ["S1", "S18", "S7", "S13", "S4"],
+      rubric: ["Có đủ 5 thành phần: bối cảnh – mục tiêu – phương pháp – kết quả – kết luận",
+        "Độ dài trong khoảng 200–300 từ, không dài dòng",
+        "Có 5–7 từ khóa, phản ánh đúng nội dung bài",
+        "Không nêu kết quả hay con số chưa từng xuất hiện ở Chương 4"] },
+
+    { ch: "Phần đầu", id: "0.3", stt: 3, title: "Danh mục thuật ngữ",
+      task: "Giải thích AI, ML, DL, NLP, GenAI, AI agent, CDSS, EHR, XAI và Human-in-the-loop.",
+      output: "Danh mục thuật ngữ và chữ viết tắt", owner: "TV2", support: "TV8", week: "Tuần 2",
+      note: "Mỗi thuật ngữ phải có nguồn tham khảo.",
+      src: ["S12", "S19", "S13", "S10"],
+      rubric: ["Đủ 10 thuật ngữ được yêu cầu, mỗi thuật ngữ một định nghĩa ngắn gọn",
+        "Mỗi định nghĩa gắn với ít nhất một nguồn cụ thể trong 19 nguồn",
+        "Phân biệt rõ AI agent với công cụ AI truyền thống (theo bốn thành phần của Liu, 2025)",
+        "XAI và Human-in-the-loop được gắn với vai trò giám sát của con người"] },
+
+    { ch: "Phần đầu", id: "0.4", stt: 4, title: "Mục lục, danh mục bảng/hình",
+      task: "Tạo mục lục tự động, danh mục bảng và danh mục hình sau khi nội dung hoàn chỉnh.",
+      output: "Mục lục hoàn chỉnh", owner: "TV10", support: "TV1", week: "Tuần 5",
+      note: "Kiểm tra lại số trang trước khi nộp.",
+      src: [],
+      rubric: ["Mục lục sinh tự động, cấp bậc đúng với cấu trúc chương/tiểu mục",
+        "Danh mục bảng và danh mục hình khớp với tên bảng/hình trong bài",
+        "Số trang đã được kiểm tra lại sau lần chỉnh sửa cuối"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.1", stt: 5, title: "Bối cảnh nghiên cứu",
+      task: "Trình bày sự phát triển của AI, nhu cầu chuyển đổi số và áp lực trong ngành y tế.",
+      output: "2–3 trang bối cảnh", owner: "TV1", support: "TV2", week: "Tuần 1",
+      note: "Tập trung vào ba nhóm: nhân viên, bệnh nhân và bác sĩ.",
+      src: ["S10", "S1", "S12", "S19", "S2"],
+      rubric: ["Có ít nhất 2 số liệu cụ thể, mỗi số liệu dẫn đúng nguồn",
+        "Phân biệt rõ bối cảnh quốc tế và bối cảnh Việt Nam",
+        "Nêu được áp lực riêng của cả ba nhóm: nhân viên, bệnh nhân, bác sĩ",
+        "Dùng thuật ngữ đúng theo quy ước G1, không đánh đồng AI nói chung với AI agent"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.2", stt: 6, title: "Lý do nghiên cứu",
+      task: "Giải thích sự phân tán của các nghiên cứu về AI trong y tế và nhu cầu tổng hợp theo ba nhóm chủ thể.",
+      output: "Phần lý do chọn đề tài", owner: "TV1", support: "TV3", week: "Tuần 1",
+      note: "Không khẳng định khoảng trống nếu chưa có nguồn chứng minh.",
+      src: ["S1", "S19", "S5"],
+      rubric: ["Chỉ ra được sự phân tán cụ thể của tài liệu, không nói chung chung",
+        "Mọi khẳng định về khoảng trống đều có nguồn chứng minh kèm theo",
+        "Giải thích được vì sao cần tổng hợp theo ba nhóm chủ thể",
+        "Không lặp lại nguyên ý đã viết ở mục 1.1"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.3", stt: 7, title: "Mục tiêu nghiên cứu",
+      task: "Xây dựng bốn mục tiêu: phân loại ứng dụng, tổng hợp lợi ích/rủi ro, xác định khoảng trống và đề xuất khung triển khai.",
+      output: "Bốn mục tiêu cụ thể", owner: "TV1", support: "TV3", week: "Tuần 1",
+      note: "Mục tiêu phải khớp với câu hỏi nghiên cứu và Chương 4.",
+      src: ["S1", "S19"],
+      rubric: ["Đúng bốn mục tiêu như yêu cầu, mỗi mục tiêu bắt đầu bằng một động từ hành động",
+        "Mỗi mục tiêu tương ứng được với một phần cụ thể ở Chương 4 hoặc Chương 5",
+        "Không trộn lẫn mục tiêu với câu hỏi nghiên cứu",
+        "Mục tiêu nằm trong khả năng của một bài tổng quan tài liệu"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.4", stt: 8, title: "Câu hỏi nghiên cứu",
+      task: "Xây dựng ba câu hỏi về ứng dụng, tác động và điều kiện triển khai AI.",
+      output: "Ba câu hỏi nghiên cứu", owner: "TV1", support: "TV3", week: "Tuần 1",
+      note: "Không dùng giả thuyết kiểm định nếu không có dữ liệu khảo sát mới.",
+      src: ["S1", "S19", "S10"],
+      rubric: ["Đúng ba câu hỏi, ở dạng nghi vấn thực sự",
+        "Bám đúng ba trục: ứng dụng – tác động – điều kiện triển khai",
+        "Không dùng ngôn ngữ giả thuyết kiểm định (theo quy ước G2)",
+        "Mỗi câu hỏi có thể trả lời được bằng dữ liệu thứ cấp đã thu thập"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.5", stt: 9, title: "Đối tượng và phạm vi",
+      task: "Xác định đối tượng là các bài nghiên cứu đã xuất bản; phạm vi thời gian, ngôn ngữ, cơ sở dữ liệu và chủ đề.",
+      output: "Phạm vi nghiên cứu rõ ràng", owner: "TV4", support: "TV1", week: "Tuần 1",
+      note: "Nêu rõ bảy bài cốt lõi và các tài liệu bổ sung nếu có.",
+      src: ["S1", "S12", "S19"],
+      rubric: ["Nói rõ đối tượng nghiên cứu là tài liệu đã xuất bản, không phải bệnh nhân hay bệnh viện",
+        "Nêu cụ thể phạm vi thời gian, ngôn ngữ và cơ sở dữ liệu tìm kiếm",
+        "Phân biệt rõ nhóm bài cốt lõi và nhóm tài liệu bổ sung, kèm số lượng",
+        "Nói rõ những gì KHÔNG thuộc phạm vi, không chỉ nói những gì có"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.6", stt: 10, title: "Ý nghĩa nghiên cứu",
+      task: "Nêu ý nghĩa học thuật và thực tiễn đối với cơ sở y tế, nhân viên, bệnh nhân và bác sĩ.",
+      output: "Phần ý nghĩa nghiên cứu", owner: "TV1", support: "TV9", week: "Tuần 1",
+      note: "Phân biệt ý nghĩa học thuật và ý nghĩa ứng dụng.",
+      src: ["S12", "S19", "S10"],
+      rubric: ["Tách bạch rõ ý nghĩa học thuật và ý nghĩa thực tiễn, không gộp chung",
+        "Nêu cụ thể ai hưởng lợi, theo từng nhóm chủ thể",
+        "Tránh các câu chung chung kiểu \"góp phần phát triển ngành\"",
+        "Ý nghĩa nêu ra tương xứng với quy mô một bài tổng quan"] },
+
+    { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.7", stt: 11, title: "Kết cấu bài",
+      task: "Giới thiệu ngắn gọn nội dung của năm chương.",
+      output: "Phần kết cấu bài", owner: "TV10", support: "TV1", week: "Tuần 5",
+      note: "Viết sau khi các chương đã ổn định.",
+      src: [],
+      rubric: ["Tóm tắt đúng thứ tự và đúng nội dung thực tế của năm chương",
+        "Viết như một đoạn giới thiệu nói ra miệng được, không liệt kê máy móc",
+        "Độ dài vừa phải, khoảng 3–5 câu"] },
+
+    { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.1", stt: 12, title: "Các khái niệm",
+      task: "Định nghĩa AI, ML, DL, NLP, GenAI, AI agent, CDSS và AI trong y tế.",
+      output: "Cơ sở khái niệm", owner: "TV2", support: "TV3", week: "Tuần 2",
+      note: "Không đồng nhất AI nói chung với AI agent.",
+      src: ["S12", "S19", "S13"],
+      rubric: ["Định nghĩa đủ các khái niệm được yêu cầu, mỗi khái niệm có nguồn",
+        "Chỉ rõ quan hệ bao hàm: AI ⊃ ML ⊃ DL, và AI agent là một nhóm bên trong AI trong y tế",
+        "Giải thích AI agent theo bốn thành phần Planning – Action – Reflection – Memory",
+        "Mỗi khái niệm có ít nhất một ví dụ y tế cụ thể"] },
+
+    { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.2", stt: 13, title: "Cơ sở lý thuyết",
+      task: "Trình bày hệ thống kỹ thuật–xã hội, AI tăng cường, tương tác người–AI, niềm tin và giám sát con người.",
+      output: "Phần cơ sở lý thuyết", owner: "TV3", support: "TV2", week: "Tuần 2",
+      note: "Chỉ gọi là lý thuyết khi có nguồn học thuật phù hợp.",
+      src: ["S10", "S6", "S11", "S3"],
+      rubric: ["Mỗi lý thuyết/khung nêu ra đều có nguồn học thuật đi kèm",
+        "Giải thích được nội dung lý thuyết, không chỉ nêu tên tác giả",
+        "Nêu được lý thuyết nào là trục chính cho khung phân tích ở mục 2.5",
+        "Phần niềm tin và chấp nhận có gắn với bằng chứng thực nghiệm (UTAUT, perceived AI threat)"] },
+
+    { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.3", stt: 14, title: "Tổng quan nghiên cứu trước",
+      task: "Tổng hợp bảy bài nghiên cứu cốt lõi theo ba nhóm: vận hành nội bộ, trải nghiệm bệnh nhân và hỗ trợ bác sĩ.",
+      output: "Bảng tổng hợp nghiên cứu trước", owner: "TV3", support: "TV8", week: "Tuần 2",
+      note: "Bảy bài cốt lõi không nhất thiết là toàn bộ tài liệu tham khảo.",
+      src: ["S18", "S16", "S17", "S8", "S7", "S15", "S11", "S3", "S13", "S9", "S14", "S4", "S1", "S2"],
+      rubric: ["Phân đúng ba nhóm, mỗi nhóm chọn 2–3 nghiên cứu tiêu biểu thay vì liệt kê hết",
+        "Mỗi nghiên cứu nêu được phương pháp gốc và một số liệu đại diện",
+        "Phân biệt rõ đâu là bằng chứng quốc tế, đâu là bằng chứng Việt Nam",
+        "Viết thành đoạn tổng hợp có so sánh, không đọc như danh mục tài liệu"] },
+
+    { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.4", stt: 15, title: "Khoảng trống và mệnh đề phân tích",
+      task: "Xác định khoảng trống nghiên cứu và xây dựng ba mệnh đề phân tích thay cho giả thuyết kiểm định.",
+      output: "Ba mệnh đề phân tích", owner: "TV1", support: "TV3", week: "Tuần 2",
+      note: "Mệnh đề phải được tổng hợp từ các nghiên cứu đã công bố.",
+      src: ["S1", "S3", "S4", "S6"],
+      rubric: ["Gọi đúng tên \"mệnh đề phân tích\", tuyệt đối không dùng ngôn ngữ giả thuyết kiểm định (quy ước G2)",
+        "Đúng ba mệnh đề, mỗi mệnh đề gắn với một nhóm chủ thể",
+        "Mỗi mệnh đề dẫn được ít nhất một nghiên cứu đã công bố làm cơ sở",
+        "Khoảng trống nêu ra có dẫn chứng, đặc biệt là mảng vận hành nội bộ tại Việt Nam"] },
+
+    { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.5", stt: 16, title: "Khung phân tích tổng hợp",
+      task: "Xây dựng mô hình: AI → nhóm chủ thể → cơ chế tác động → kết quả → rủi ro và điều kiện triển khai.",
+      output: "Hình 2.1 và phần giải thích", owner: "TV3", support: "TV9", week: "Tuần 2",
+      note: "Khung phân tích không phải mô hình nhân quả mới.",
+      src: ["S12", "S19", "S10"],
+      rubric: ["Mô tả đủ năm khối theo đúng thứ tự logic của khung",
+        "Nói rõ đây là khung phân tích để sắp xếp tài liệu, không phải mô hình nhân quả mới",
+        "Vai trò giám sát của con người được thể hiện rõ trong khung",
+        "Có thể mô tả lại khung bằng lời mà không cần nhìn hình"] },
+
+    { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.1", stt: 17, title: "Quy trình nghiên cứu",
+      task: "Trình bày các bước tìm kiếm, sàng lọc, phân loại, đánh giá và tổng hợp tài liệu.",
+      output: "Sơ đồ quy trình nghiên cứu", owner: "TV4", support: "TV1", week: "Tuần 2",
+      note: "Có thể trình bày bằng sơ đồ PRISMA nếu đủ dữ liệu.",
+      src: ["S1"],
+      rubric: ["Nêu đủ các bước theo đúng thứ tự, mỗi bước nói rõ làm gì",
+        "Có số lượng tài liệu vào/ra ở từng bước sàng lọc",
+        "Chỉ dùng nhãn PRISMA khi thực sự ghi nhận đủ số liệu từng bước",
+        "Liên kết được bước nào tạo ra kết quả nào ở Chương 4"] },
+
+    { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.2", stt: 18, title: "Phương pháp nghiên cứu",
+      task: "Nêu rõ đây là nghiên cứu tổng quan tài liệu dựa trên dữ liệu thứ cấp, kết hợp thống kê mô tả và tổng hợp chủ đề.",
+      output: "Phần phương pháp", owner: "TV4", support: "TV8", week: "Tuần 2",
+      note: "Không gọi là nghiên cứu định lượng nếu chỉ lập biểu đồ mô tả.",
+      src: [],
+      rubric: ["Gọi đúng tên phương pháp: tổng quan tài liệu trên dữ liệu thứ cấp",
+        "Giải thích được tổng hợp theo chủ đề (narrative/thematic synthesis) làm những gì",
+        "Không gọi bài là nghiên cứu định lượng chỉ vì có biểu đồ mô tả",
+        "Nêu giới hạn của việc so sánh số liệu giữa các nghiên cứu khác bối cảnh"] },
+
+    { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.3", stt: 19, title: "Thu thập dữ liệu",
+      task: "Xác định cơ sở dữ liệu, từ khóa, tiêu chí đưa vào và tiêu chí loại trừ tài liệu.",
+      output: "Bộ từ khóa và tiêu chí lựa chọn", owner: "TV4", support: "TV5, TV6, TV7", week: "Tuần 2",
+      note: "Mọi thành viên dùng chung tiêu chí sàng lọc.",
+      src: ["S1"],
+      rubric: ["Liệt kê cụ thể các cơ sở dữ liệu đã tìm kiếm",
+        "Có bộ từ khóa thật, viết được cả tiếng Việt và tiếng Anh",
+        "Tiêu chí đưa vào và tiêu chí loại trừ tách bạch, kiểm chứng được",
+        "Nêu rõ cả nhóm dùng chung một bộ tiêu chí"] },
+
+    { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.4", stt: 20, title: "Xử lý dữ liệu",
+      task: "Mã hóa tài liệu theo nhóm chủ thể, công nghệ, mục đích, lợi ích, rủi ro và kết quả.",
+      output: "Bảng mã hóa dữ liệu", owner: "TV8", support: "TV4", week: "Tuần 3",
+      note: "Dùng cùng một mẫu trích xuất cho toàn nhóm.",
+      src: [],
+      rubric: ["Nêu đủ sáu trường mã hóa được yêu cầu",
+        "Mô tả mẫu trích xuất dùng chung cho toàn nhóm",
+        "Nói rõ đầu ra của bước này là bảng nào, dùng cho phần nào của Chương 4",
+        "Có cách xử lý khi một tài liệu thuộc nhiều nhóm chủ thể"] },
+
+    { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.5", stt: 21, title: "Đảm bảo độ tin cậy",
+      task: "Quy định mỗi tài liệu quan trọng được ít nhất hai thành viên kiểm tra và xử lý bất đồng.",
+      output: "Quy trình kiểm tra chéo", owner: "TV8", support: "TV1", week: "Tuần 3",
+      note: "Ghi lại lý do loại hoặc giữ tài liệu.",
+      src: [],
+      rubric: ["Quy trình hai người kiểm tra được mô tả cụ thể, ai làm gì",
+        "Có cách xử lý khi hai người bất đồng",
+        "Nêu rõ việc ghi lại lý do loại hoặc giữ từng tài liệu",
+        "Gắn được quy trình này với chất lượng của kết quả ở Chương 4"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.1", stt: 22, title: "Đặc điểm tài liệu được chọn",
+      task: "Tổng hợp năm xuất bản, quốc gia, loại nghiên cứu, nhóm chủ thể và loại công nghệ AI.",
+      output: "Bảng 4.1 và hai biểu đồ", owner: "TV8", support: "TV10", week: "Tuần 3",
+      note: "Có thể dùng bảy bài cốt lõi và nhóm tài liệu bổ sung.",
+      src: ["S1", "S12", "S19", "S18", "S7", "S13", "S4", "S3", "S6"],
+      rubric: ["Số liệu thống kê khớp với danh sách nguồn thực tế của nhóm",
+        "Có ít nhất hai biểu đồ, mỗi biểu đồ có nhận xét đi kèm",
+        "Phân loại theo nhóm chủ thể và loại công nghệ nhất quán với mục 3.4",
+        "Không suy diễn vượt ra ngoài những gì bảng và biểu đồ cho thấy"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.2.1", stt: 23, title: "AI trong vận hành nội bộ",
+      task: "Phân tích đặt lịch, quản lý hồ sơ, phân luồng, điều phối nhân sự, giao tiếp và giảm tải hành chính.",
+      output: "Phân tích nhóm nhân viên", owner: "TV5", support: "TV8", week: "Tuần 4",
+      note: "Trình bày ứng dụng, lợi ích, rủi ro và khoảng trống.",
+      src: ["S18", "S16", "S17", "S8", "S2", "S1"],
+      rubric: ["Trình bày đủ bốn phần: ứng dụng – lợi ích – rủi ro – khoảng trống",
+        "Mỗi con số dẫn đúng nguồn và đúng bối cảnh nghiên cứu gốc",
+        "Chỉ ra được đây là mảng gần như chưa có bằng chứng thực nghiệm tại Việt Nam",
+        "Không cộng gộp số liệu từ các nghiên cứu khác bối cảnh, cỡ mẫu"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.2.2", stt: 24, title: "AI trong trải nghiệm bệnh nhân",
+      task: "Phân tích chatbot, tư vấn, nhắc lịch, cá nhân hóa, sự hài lòng, niềm tin và tâm lý bệnh nhân.",
+      output: "Phân tích nhóm bệnh nhân", owner: "TV6", support: "TV8", week: "Tuần 4",
+      note: "Tách trải nghiệm dịch vụ khỏi kết quả điều trị.",
+      src: ["S7", "S15", "S11", "S3"],
+      rubric: ["Tách bạch rõ trải nghiệm dịch vụ và kết quả điều trị — đây là lỗi dễ mắc nhất ở mục này",
+        "Dùng đúng ngữ cảnh của chỉ số SMD = 0,69 (tuân thủ dùng thuốc, không phải sự hài lòng)",
+        "Có bằng chứng Việt Nam về thái độ người bệnh kèm cỡ mẫu",
+        "Nêu được rủi ro và giới hạn, không chỉ nói mặt tích cực"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.2.3", stt: 25, title: "AI hỗ trợ bác sĩ",
+      task: "Phân tích chẩn đoán, hình ảnh, dự đoán rủi ro, gợi ý điều trị và trách nhiệm chuyên môn.",
+      output: "Phân tích nhóm bác sĩ", owner: "TV7", support: "TV8", week: "Tuần 4",
+      note: "Không khẳng định AI thay thế bác sĩ nếu nguồn không chứng minh.",
+      src: ["S13", "S9", "S14", "S4", "S10"],
+      rubric: ["Không có câu nào khẳng định AI thay thế bác sĩ",
+        "Các số liệu về độ nhạy, độ đặc hiệu, tỷ lệ chính xác được dẫn đúng nguồn và đúng cỡ mẫu",
+        "Nêu được bằng chứng thực nghiệm tại Việt Nam và giới hạn của nó",
+        "Có bàn về trách nhiệm chuyên môn và quyền quyết định cuối cùng"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.3", stt: 26, title: "So sánh quốc tế và Việt Nam",
+      task: "So sánh các bằng chứng nghiên cứu quốc tế với tài liệu hiện có tại Việt Nam.",
+      output: "Bảng so sánh", owner: "TV9", support: "TV5, TV6, TV7", week: "Tuần 4",
+      note: "Chỉ gọi là thực trạng nếu có đủ dữ liệu đại diện.",
+      src: ["S1", "S2", "S3", "S4", "S5", "S6", "S18", "S7", "S13"],
+      rubric: ["Bảng so sánh theo đúng ba nhóm chủ thể, hai cột quốc tế – Việt Nam",
+        "Chỉ rõ mảng nào ở Việt Nam chưa có bằng chứng thực nghiệm",
+        "Không gọi là \"thực trạng Việt Nam\" nếu chỉ dựa trên vài nghiên cứu lẻ",
+        "So sánh có giải thích nguyên nhân khác biệt, không chỉ liệt kê song song"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.4", stt: 27, title: "Rào cản và rủi ro chung",
+      task: "Phân tích bảo mật, thiên lệch, quyền riêng tư, thiếu minh bạch, tích hợp dữ liệu và phụ thuộc công nghệ.",
+      output: "Bảng lợi ích–rủi ro", owner: "TV9", support: "TV3", week: "Tuần 4",
+      note: "Phân biệt rủi ro được nghiên cứu và nhận định của nhóm.",
+      src: ["S6", "S1", "S11", "S10", "S2"],
+      rubric: ["Phân biệt rõ đâu là rủi ro đã được nghiên cứu ghi nhận, đâu là nhận định của nhóm",
+        "Nêu được ít nhất bốn rào cản, mỗi rào cản có nguồn hoặc lập luận rõ",
+        "Có nhắc tới cảm nhận bị đe dọa của chính nhân viên y tế kèm số liệu",
+        "Mỗi rào cản đều nối được tới một giải pháp ở Chương 5"] },
+
+    { ch: "Chương 4: Kết quả nghiên cứu", id: "4.5", stt: 28, title: "Thảo luận kết quả",
+      task: "Đối chiếu kết quả tổng hợp với cơ sở lý thuyết và các nghiên cứu trước.",
+      output: "Phần thảo luận", owner: "TV1", support: "TV3, TV9", week: "Tuần 4",
+      note: "Trả lời trực tiếp các câu hỏi nghiên cứu.",
+      src: ["S12", "S19", "S10", "S1"],
+      rubric: ["Trả lời trực tiếp cả ba câu hỏi nghiên cứu đã đặt ở mục 1.4",
+        "Đối chiếu từng mệnh đề phân tích với bằng chứng, nêu rõ mức độ được ủng hộ khác nhau",
+        "Không dùng cách nói \"giả thuyết được chấp nhận/bác bỏ\" (quy ước G2)",
+        "Có đối chiếu ngược lại với khung phân tích ở mục 2.5"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.1", stt: 29, title: "Định hướng phát triển",
+      task: "Đề xuất định hướng ứng dụng AI trong y tế theo ba nhóm chủ thể.",
+      output: "Định hướng phát triển", owner: "TV10", support: "TV9", week: "Tuần 5",
+      note: "Phải dựa trên kết quả tổng quan.",
+      src: ["S12", "S19", "S1"],
+      rubric: ["Ba định hướng gắn đúng với ba nhóm chủ thể",
+        "Mỗi định hướng dẫn ngược lại được một kết quả cụ thể ở Chương 4",
+        "Không đề xuất những gì nằm ngoài phạm vi dữ liệu đã tổng hợp",
+        "Có thứ tự ưu tiên và lý do cho thứ tự đó"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.2.1", stt: 30, title: "Giải pháp cho vận hành nội bộ",
+      task: "Đề xuất giải pháp cho quản lý quy trình, nhân sự, hồ sơ và phối hợp nội bộ.",
+      output: "Nhóm giải pháp 1", owner: "TV5", support: "TV9", week: "Tuần 5",
+      note: "Nêu điều kiện triển khai và tiêu chí đánh giá.",
+      src: ["S18", "S16", "S17", "S8", "S2"],
+      rubric: ["Giải pháp cụ thể, khả thi, không chung chung kiểu \"cần đầu tư nhiều hơn\"",
+        "Mỗi giải pháp nêu rõ điều kiện triển khai cần có",
+        "Có tiêu chí đánh giá đo lường được cho từng giải pháp",
+        "Tham chiếu được mô hình quốc tế tương ứng đã nêu ở Chương 4"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.2.2", stt: 31, title: "Giải pháp cho bệnh nhân",
+      task: "Đề xuất giải pháp về minh bạch, hỗ trợ con người, bảo mật và cá nhân hóa.",
+      output: "Nhóm giải pháp 2", owner: "TV6", support: "TV9", week: "Tuần 5",
+      note: "Đặt trải nghiệm và quyền riêng tư của bệnh nhân làm trung tâm.",
+      src: ["S7", "S15", "S11", "S3"],
+      rubric: ["Đủ bốn hướng: minh bạch, hỗ trợ con người, bảo mật, cá nhân hóa",
+        "Quyền riêng tư của người bệnh được đặt làm trung tâm, không chỉ nhắc qua",
+        "Luôn có lối chuyển sang người thật khi AI không xử lý được",
+        "Giải pháp bám vào bằng chứng về hiệu quả chatbot đã nêu ở mục 4.2.2"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.2.3", stt: 32, title: "Giải pháp cho bác sĩ",
+      task: "Đề xuất giải pháp về kiểm tra kết quả AI, khả năng giải thích và giám sát chuyên môn.",
+      output: "Nhóm giải pháp 3", owner: "TV7", support: "TV9", week: "Tuần 5",
+      note: "Duy trì quyền quyết định chuyên môn cuối cùng của bác sĩ.",
+      src: ["S13", "S9", "S14", "S4", "S10"],
+      rubric: ["Khẳng định rõ bác sĩ giữ quyền quyết định chuyên môn cuối cùng",
+        "Có cơ chế kiểm chứng kết quả do AI đưa ra, mô tả được quy trình",
+        "Yêu cầu về khả năng giải thích (XAI) được nêu cụ thể, không chỉ nhắc tên",
+        "Gắn với bằng chứng và giới hạn đã nêu ở mục 4.2.3"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.3", stt: 33, title: "Giải pháp nền tảng",
+      task: "Đề xuất giải pháp về dữ liệu, hạ tầng, đào tạo, pháp lý, đạo đức và quản trị AI.",
+      output: "Nhóm giải pháp chung", owner: "TV9", support: "TV4", week: "Tuần 5",
+      note: "Bao gồm bảo mật, công bằng, khả năng giải thích và giám sát con người.",
+      src: ["S1", "S2", "S6", "S10"],
+      rubric: ["Đủ sáu nhóm giải pháp nền tảng được yêu cầu",
+        "Mỗi giải pháp nối được với một rào cản cụ thể đã nêu ở mục 4.4",
+        "Có giải pháp cho cảm nhận bị đe dọa của nhân viên y tế, không bỏ qua yếu tố con người",
+        "Nguyên tắc giám sát con người xuyên suốt được nêu rõ"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.4", stt: 34, title: "Kế hoạch thực hiện",
+      task: "Xây dựng lộ trình ngắn hạn, trung hạn và dài hạn.",
+      output: "Bảng 5.1 và lộ trình triển khai", owner: "TV10", support: "TV9", week: "Tuần 5",
+      note: "Đây là đề xuất của nhóm dựa trên tài liệu tổng hợp.",
+      src: ["S12", "S1"],
+      rubric: ["Ba mốc thời gian rõ ràng, hoạt động trọng tâm khác nhau ở mỗi mốc",
+        "Ghi rõ đây là đề xuất của nhóm, không phải lộ trình đã được kiểm chứng",
+        "Thứ tự các mốc có lý do, dựa trên mức độ sẵn sàng của bằng chứng",
+        "Không lặp lại nguyên nội dung mục 5.1"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.5", stt: 35, title: "Hạn chế và hướng nghiên cứu",
+      task: "Nêu hạn chế về số lượng nguồn, phạm vi dữ liệu, khác biệt phương pháp và hướng nghiên cứu tiếp theo.",
+      output: "Phần hạn chế và hướng phát triển", owner: "TV4", support: "TV1", week: "Tuần 5",
+      note: "Không che giấu các hạn chế của bài tổng quan.",
+      src: ["S1"],
+      rubric: ["Nêu thẳng hạn chế về số lượng nguồn và phạm vi dữ liệu, không giảm nhẹ",
+        "Chỉ ra khó khăn khi so sánh các nghiên cứu khác phương pháp, khác bối cảnh",
+        "Phân biệt hạn chế của bài nghiên cứu với hạn chế của việc ứng dụng AI trên thực tế",
+        "Hướng nghiên cứu tiếp theo cụ thể, xuất phát từ chính khoảng trống đã tìm ra"] },
+
+    { ch: "Chương 5: Kết luận và giải pháp", id: "5.6", stt: 36, title: "Kết luận",
+      task: "Trả lời trực tiếp ba câu hỏi nghiên cứu và tổng kết đóng góp của bài.",
+      output: "Kết luận cuối cùng", owner: "TV1", support: "TV10", week: "Tuần 5",
+      note: "Không đưa thêm luận điểm mới chưa xuất hiện ở phần kết quả.",
+      src: ["S1", "S18", "S7", "S13", "S4"],
+      rubric: ["Trả lời đủ và trực tiếp cả ba câu hỏi nghiên cứu ở mục 1.4",
+        "Không xuất hiện luận điểm hay số liệu mới chưa từng có ở Chương 4",
+        "Phân biệt rõ đóng góp của bài và hạn chế của bài",
+        "Không dùng ngôn ngữ kiểm định giả thuyết (quy ước G2)"] },
+
+    { ch: "Tài liệu tham khảo", id: "6.1", stt: 37, title: "Quản lý nguồn",
+      task: "Chuẩn hóa thông tin bảy bài cốt lõi và các tài liệu bổ sung theo APA hoặc IEEE.",
+      output: "Danh mục tài liệu tham khảo", owner: "TV8", support: "Tất cả thành viên", week: "Tuần 5",
+      note: "Mỗi nhận định quan trọng phải có nguồn tương ứng.",
+      src: [],
+      rubric: ["Thống nhất một chuẩn trích dẫn duy nhất trong toàn bài",
+        "Danh mục khớp với các trích dẫn xuất hiện trong nội dung, không thừa không thiếu",
+        "Mỗi nhận định quan trọng trong bài đều truy được về một nguồn",
+        "Thông tin từng nguồn đầy đủ: tác giả, năm, tên bài, nơi công bố, DOI/đường dẫn"] },
+
+    { ch: "Biên tập tổng thể", id: "7.1", stt: 38, title: "Kiểm tra cuối",
+      task: "Kiểm tra chính tả, văn phong, trích dẫn, số liệu, mục lục, định dạng và tính thống nhất.",
+      output: "Bản hoàn chỉnh để nộp", owner: "TV10", support: "TV1", week: "Tuần 5",
+      note: "Kiểm tra lần cuối sau khi tất cả thành viên hoàn thành phần việc.",
+      src: [],
+      rubric: ["Thuật ngữ dùng thống nhất toàn bài theo quy ước G1",
+        "Không còn chỗ nào gọi mệnh đề phân tích là giả thuyết (quy ước G2)",
+        "Mọi số liệu trong bài khớp với bảng biểu và với nguồn gốc",
+        "Định dạng, đánh số bảng/hình và mục lục nhất quán"] }
+  ];
+
+  var CHAPTERS = [];
+  OUTLINE.forEach(function(s){ if(CHAPTERS.indexOf(s.ch) === -1) CHAPTERS.push(s.ch); });
+
+  var state = {
+    activeId: OUTLINE[0].id,
+    view: "practice",
+    drafts: {},        // id -> {draft, feedback, updatedAt}
+    collapsed: {}
+  };
+
+  var stageEl = document.getElementById("stage");
+  var navEl = document.getElementById("outlineNav");
+
+  /* ---------- Theme ---------- */
+  var themeBtn = document.getElementById("themeBtn");
+  (function(){ try{ var t = localStorage.getItem("n4_theme"); if(t) document.documentElement.setAttribute("data-theme", t); }catch(e){} })();
+  themeBtn.addEventListener("click", function(){
+    var cur = document.documentElement.getAttribute("data-theme");
+    var next = cur === "dark" ? "light" : (cur === "light" ? null : "dark");
+    if(next) document.documentElement.setAttribute("data-theme", next); else document.documentElement.removeAttribute("data-theme");
+    try{ localStorage.setItem("n4_theme", next || ""); }catch(e){}
+  });
+
+  /* ---------- Goi AI qua server cua chinh ban (/api/grade tren Vercel) ---------- */
+  async function callClaude(prompt){
+    var response;
+    try{
+      response = await fetch("/api/grade", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ prompt: prompt })
+      });
+    }catch(networkErr){
+      var eNet = new Error("Khong ket noi duoc toi may cham diem");
+      eNet.code = "network"; throw eNet;
+    }
+    if(!response.ok){
+      var bodyText = await response.text().catch(function(){ return ""; });
+      var eHttp = new Error("HTTP " + response.status + " - " + bodyText);
+      eHttp.code = "http_error"; throw eHttp;
+    }
+    var data = await response.json();
+    if(data && data.error){
+      var eApi = new Error(data.error || "Loi goi API");
+      eApi.code = "api_error"; throw eApi;
+    }
+    try{ return extractJson(data.text); }
+    catch(err){
+      var eJson = new Error(err.message); eJson.code = "invalid_json"; eJson.text = data.text; throw eJson;
+    }
+  }
+
+  /* ---------- Nav ---------- */
+  function statusFor(id){
+    var d = state.drafts[id];
+    if(!d) return "todo";
+    if(d.feedback) return "done";
+    if(d.draft && d.draft.trim()) return "progress";
+    return "todo";
+  }
+
+  function renderNav(){
+    navEl.innerHTML = "";
+    CHAPTERS.forEach(function(ch){
+      var secs = OUTLINE.filter(function(s){ return s.ch === ch; });
+      var group = document.createElement("div"); group.className = "chuong-group";
+      var head = document.createElement("button"); head.className = "chuong-head";
+      var expanded = !state.collapsed[ch];
+      head.setAttribute("aria-expanded", expanded ? "true" : "false");
+      head.innerHTML = '<span class="chev">▾</span><span>' + escapeHtml(ch) + '</span>';
+      head.addEventListener("click", function(){ state.collapsed[ch] = !state.collapsed[ch]; renderNav(); });
+      group.appendChild(head);
+      if(expanded){
+        var list = document.createElement("div"); list.className = "sec-list";
+        secs.forEach(function(s){
+          var btn = document.createElement("button");
+          btn.className = "sec-btn" + (s.id === state.activeId && state.view === "practice" ? " active" : "");
+          var st = statusFor(s.id);
+          btn.innerHTML = '<span class="dot ' + (st === "done" ? "done" : st === "progress" ? "progress" : "") + '"></span><span>' +
+            escapeHtml(s.id + ". " + s.title) + '</span>';
+          btn.addEventListener("click", function(){
+            state.activeId = s.id; state.view = "practice";
+            syncToggle(); render(); window.scrollTo({top:0});
+          });
+          list.appendChild(btn);
+        });
+        group.appendChild(list);
+      }
+      navEl.appendChild(group);
+    });
+    var done = OUTLINE.filter(function(s){ return statusFor(s.id) === "done"; }).length;
+    document.getElementById("progressRing").style.setProperty("--pct", Math.round(done / OUTLINE.length * 100));
+    document.getElementById("progressText").textContent = done + "/" + OUTLINE.length;
+  }
+
+  var viewToggle = document.getElementById("viewToggle");
+  viewToggle.addEventListener("click", function(e){
+    var btn = e.target.closest("button[data-view]");
+    if(!btn) return;
+    state.view = btn.getAttribute("data-view");
+    syncToggle(); render();
+  });
+  function syncToggle(){
+    Array.prototype.forEach.call(viewToggle.querySelectorAll("button"), function(b){
+      b.classList.toggle("active", b.getAttribute("data-view") === state.view);
+    });
+  }
+
+  function render(){
+    renderNav();
+    if(state.view === "sources") renderSources(); else renderStage();
+  }
+
+  /* ---------- Practice stage ---------- */
+  function findSection(id){ for(var i=0;i<OUTLINE.length;i++) if(OUTLINE[i].id === id) return OUTLINE[i]; return OUTLINE[0]; }
+
+  function srcItemHtml(key){
+    var s = SOURCES[key];
+    if(!s) return "";
+    return '<div class="src-item"><div class="src-head"><span class="src-label">' + escapeHtml(s.label) + '</span>' +
+      '<span class="src-tag' + (s.origin === "VN" ? " vn" : "") + '">' + (s.origin === "VN" ? "Việt Nam" : "Quốc tế") + '</span>' +
+      '<span class="src-tag">' + escapeHtml(s.group) + '</span></div>' +
+      '<div class="src-method">' + escapeHtml(s.method) + '</div>' +
+      '<div class="src-find">' + escapeHtml(s.findings) + '</div></div>';
+  }
+
+  function renderStage(){
+    var sec = findSection(state.activeId);
+    var rec = state.drafts[sec.id] || {};
+    var html = '';
+
+    html += '<div class="crumb">' + escapeHtml(sec.ch.toUpperCase()) + ' · ĐẦU VIỆC ' + sec.stt + '/38</div>';
+    html += '<h2>' + escapeHtml(sec.id + ". " + sec.title) + '</h2>';
+
+    html += '<div class="card"><h3>Nội dung cần thực hiện</h3><div class="brief">' + escapeHtml(sec.task) + '</div>';
+    html += '<div class="meta-grid">';
+    html += '<div class="meta-item"><div class="k">Sản phẩm đầu ra</div><div class="v">' + escapeHtml(sec.output) + '</div></div>';
+    html += '<div class="meta-item"><div class="k">Phụ trách chính</div><div class="v">' + escapeHtml(sec.owner) + '</div></div>';
+    html += '<div class="meta-item"><div class="k">Phối hợp / kiểm tra</div><div class="v">' + escapeHtml(sec.support) + '</div></div>';
+    html += '<div class="meta-item"><div class="k">Thời hạn</div><div class="v">' + escapeHtml(sec.week) + '</div></div>';
+    html += '</div>';
+    if(sec.note) html += '<div class="note-line">📌 <div><b>Ghi chú của nhóm:</b> ' + escapeHtml(sec.note) + '</div></div>';
+    html += '</div>';
+
+    if(sec.src && sec.src.length){
+      html += '<div class="card"><h3>Dữ kiện từ nguồn nghiên cứu (' + sec.src.length + ' bài) — không phải câu văn mẫu, bạn tự diễn đạt</h3>';
+      html += '<div class="src-list">' + sec.src.map(srcItemHtml).join('') + '</div></div>';
+    }
+
+    html += '<div class="card"><h3>AI sẽ chấm theo tiêu chí</h3><ul class="rubric">';
+    sec.rubric.forEach(function(r,i){ html += '<li><span class="idx">' + (i+1) + '</span><span>' + escapeHtml(r) + '</span></li>'; });
+    html += '</ul></div>';
+
+    html += '<div class="card"><h3>Bài viết của bạn</h3>';
+    html += '<textarea id="draftBox" placeholder="Viết bằng lời của chính bạn — viết được đến đâu thì nhờ Claude chấm đến đó...">' + escapeHtml(rec.draft || "") + '</textarea>';
+    html += '<div class="wordcount" id="wc">0 từ</div>';
+    html += '<div class="actions"><button class="primary" id="gradeBtn">Chấm điểm &amp; gợi ý</button>';
+    html += '<button class="ghost" id="clearBtn">Xoá bài này</button></div></div>';
+
+    html += '<div id="fbSlot"></div>';
+    html += '<footer class="note">Bài viết của bạn không được lưu lại ở đâu cả — chỉ tồn tại trong phiên làm việc hiện tại trên trình duyệt của bạn và sẽ mất khi tải lại trang. Claude chấm dựa trên 19 nguồn nghiên cứu của nhóm và quy ước thống nhất trong file góp ý — xem tab "19 nguồn &amp; quy ước".</footer>';
+
+    stageEl.innerHTML = html;
+
+    var box = document.getElementById("draftBox");
+    var wc = document.getElementById("wc");
+    function updateWc(){ wc.textContent = (box.value.trim().match(/\S+/g) || []).length + " từ"; }
+    updateWc();
+    box.addEventListener("input", debounce(function(){ updateWc(); saveDraft(sec.id, box.value); }, 500));
+    document.getElementById("gradeBtn").addEventListener("click", function(){ gradeSection(sec, box.value); });
+    document.getElementById("clearBtn").addEventListener("click", function(){
+      if(!box.value.trim()) return;
+      delete state.drafts[sec.id]; render();
+    });
+    renderFeedback(sec.id);
+  }
+
+  function saveDraft(id, text){
+    var rec = state.drafts[id] || {};
+    rec.draft = text; rec.updatedAt = Date.now();
+    state.drafts[id] = rec;
+    renderNav();
+  }
+
+  /* ---------- Grading ---------- */
+  async function gradeSection(sec, draftText){
+    var btn = document.getElementById("gradeBtn");
+    var slot = document.getElementById("fbSlot");
+    if(!draftText || draftText.trim().length < 15){
+      slot.innerHTML = '<div class="card"><div class="empty-hint">Viết ít nhất vài câu trước khi nhờ chấm điểm nhé.</div></div>';
+      return;
+    }
+
+    btn.disabled = true;
+    slot.innerHTML = '<div class="card feedback"><div class="thinking"><span class="spinner"></span> Đang đọc và chấm bài của bạn...</div></div>';
+
+    try{
+      var data = await callClaude(buildPrompt(sec, draftText));
+      var fb = normalizeFeedback(data);
+      var rec = Object.assign({}, state.drafts[sec.id] || {});
+      rec.draft = draftText; rec.feedback = fb; rec.updatedAt = Date.now();
+      state.drafts[sec.id] = rec;
+      renderFeedback(sec.id); renderNav();
+    }catch(e){
+      var code = e && e.code;
+      var msg = "Có lỗi khi chấm bài, thử lại sau.";
+      if(code === "not_signed_in") msg = "Không gọi được Claude — hãy đăng nhập claude.ai rồi mở lại artifact trong khung xem của Claude (không mở link ra tab/trình duyệt ngoài).";
+      else if(code === "rate_limited") msg = "Đang có quá nhiều lượt chấm cùng lúc, đợi một chút rồi thử lại.";
+      else if(code === "invalid_json") msg = "Claude trả lời không đúng định dạng, hãy bấm chấm lại.";
+      else if(code === "network") msg = "Không kết nối được tới Claude — kiểm tra mạng rồi thử lại.";
+      slot.innerHTML = '<div class="card feedback"><div class="empty-hint">' + escapeHtml(msg) +
+        '<div style="margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted)">' +
+        (code ? 'mã lỗi: ' + escapeHtml(code) : 'mã lỗi: (không có)') +
+        (e && e.message ? '<br>chi tiết: ' + escapeHtml(String(e.message)) : '') + '</div>' +
+        '</div><div class="actions"><button class="primary" id="retryBtn">Thử lại</button></div></div>';
+      var rb = document.getElementById("retryBtn");
+      if(rb) rb.addEventListener("click", function(){ gradeSection(sec, draftText); });
+    }
+    btn.disabled = false;
+  }
+
+  function extractJson(text){
+    if(typeof text !== "string") throw new Error("phản hồi rỗng");
+    var fence = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    var c = fence ? fence[1] : text;
+    var start = -1, endCh = null;
+    for(var i=0;i<c.length;i++){
+      if(c[i] === "{"){ start = i; endCh = "}"; break; }
+      if(c[i] === "["){ start = i; endCh = "]"; break; }
+    }
+    if(start === -1) throw new Error("không tìm thấy JSON");
+    var end = c.lastIndexOf(endCh);
+    if(end <= start) throw new Error("JSON không hoàn chỉnh");
+    return JSON.parse(c.slice(start, end+1));
+  }
+
+  function buildPrompt(sec, draftText){
+    var L = [];
+    L.push("Bạn là trợ giảng chấm bài cho một nhóm sinh viên MBA đang viết BÀI TỔNG QUAN TÀI LIỆU về ứng dụng AI trong hệ sinh thái chăm sóc sức khỏe (vận hành nội bộ, trải nghiệm bệnh nhân, hỗ trợ quyết định lâm sàng).");
+    L.push("QUY TẮC TỐI THƯỢNG: TUYỆT ĐỐI KHÔNG viết hộ đoạn văn hoàn chỉnh, KHÔNG đưa câu mẫu để họ chép vào bài. Mục đích là để chính người viết tự diễn đạt bằng lời của họ. Khi thiếu ý, chỉ được GỢI Ý bằng câu hỏi mở.");
+    L.push("");
+    L.push("QUY ƯỚC BẮT BUỘC CỦA NHÓM (trích từ file góp ý — vi phạm quy ước này phải bị trừ điểm và nêu rõ trong phần gaps):");
+    GUIDELINES.forEach(function(g){ L.push("- [" + g.id + "] " + g.title + ": " + g.body); });
+    L.push("");
+    L.push("ĐẦU VIỆC ĐANG LUYỆN: " + sec.stt + "/38 — mục " + sec.id + ". " + sec.title + " (thuộc " + sec.ch + ")");
+    L.push("Nội dung cần thực hiện: " + sec.task);
+    L.push("Sản phẩm đầu ra mong đợi: " + sec.output);
+    if(sec.note) L.push("Ghi chú riêng của nhóm cho mục này: " + sec.note);
+    L.push("");
+    if(sec.src && sec.src.length){
+      L.push("CÁC NGUỒN NGHIÊN CỨU NHÓM ĐÃ THU THẬP, LIÊN QUAN TỚI MỤC NÀY (bài viết phải nhất quán với những dữ kiện này; nếu bài viết nêu số liệu sai lệch so với đây thì phải chỉ ra):");
+      sec.src.forEach(function(k){
+        var s = SOURCES[k];
+        if(!s) return;
+        L.push("- " + s.label + " [" + (s.origin === "VN" ? "Việt Nam" : "Quốc tế") + " · " + s.group + "]");
+        L.push("  Phương pháp: " + s.method);
+        L.push("  Kết quả chính: " + s.findings);
+      });
+      L.push("");
+    }
+    L.push("TIÊU CHÍ CHẤM (mỗi tiêu chí cho điểm 0-10):");
+    sec.rubric.forEach(function(r,i){ L.push((i+1) + ". " + r); });
+    L.push("");
+    L.push("BÀI VIẾT CỦA SINH VIÊN:");
+    L.push('"""');
+    L.push(draftText.slice(0, 5000));
+    L.push('"""');
+    L.push("");
+    L.push("ĐỊNH DẠNG TRẢ LỜI (bắt buộc): chỉ in ra DUY NHẤT một JSON object hợp lệ, ký tự đầu là { và ký tự cuối là }. Không lời dẫn, không giải thích ngoài JSON, không dùng khối mã markdown.");
+    L.push("Các khoá bắt buộc: overall (số 0-10); criteria (mảng các {name, score}, mỗi tiêu chí ở trên một phần tử, name rút gọn dưới 8 từ); strengths (mảng tối đa 3 chuỗi, điểm mạnh cụ thể dựa trên chính câu chữ họ viết); gaps (mảng tối đa 3 chuỗi, mỗi chuỗi là một CÂU HỎI gợi mở để họ tự bổ sung, không phải câu khẳng định); sources (mảng tối đa 3 chuỗi, mỗi chuỗi gợi ý — dưới dạng câu hỏi — về nguồn nào trong danh sách trên nên được dùng hoặc dùng chính xác hơn, ghi rõ tên tác giả và năm); next_step (một chuỗi, một câu gợi ý hướng suy nghĩ tiếp theo, dưới 30 từ, không phải câu văn để chép).");
+    L.push("Ví dụ đúng định dạng (nội dung chỉ minh hoạ, phải chấm theo bài thật ở trên):");
+    L.push('{"overall": 6.5, "criteria": [{"name": "Số liệu có nguồn", "score": 7}, {"name": "Phân biệt quốc tế/VN", "score": 6}], "strengths": ["Nêu được con số 9% và so sánh với nhóm nước phát triển"], "gaps": ["Bạn lấy con số đó từ nghiên cứu nào, cỡ mẫu bao nhiêu?"], "sources": ["Bạn có thể dùng thêm số liệu của Wang và cộng sự (2026) để minh hoạ mảng vận hành nội bộ không?"], "next_step": "Thử thêm một ví dụ bệnh viện cụ thể để phần này bớt trừu tượng."}');
+    L.push("Toàn bộ nội dung JSON viết bằng tiếng Việt.");
+    return L.join("\n");
+  }
+
+  function normalizeFeedback(data){
+    data = data || {};
+    var overall = Number(data.overall); if(!isFinite(overall)) overall = 0;
+    overall = Math.max(0, Math.min(10, overall));
+    var criteria = Array.isArray(data.criteria) ? data.criteria.map(function(c){
+      return { name: String(c && c.name || "Tiêu chí"), score: Math.max(0, Math.min(10, Number(c && c.score) || 0)) };
+    }) : [];
+    return {
+      overall: overall, criteria: criteria,
+      strengths: Array.isArray(data.strengths) ? data.strengths.map(String) : [],
+      gaps: Array.isArray(data.gaps) ? data.gaps.map(String) : [],
+      sources: Array.isArray(data.sources) ? data.sources.map(String) : [],
+      next_step: typeof data.next_step === "string" ? data.next_step : "",
+      ts: Date.now()
+    };
+  }
+
+  function renderFeedback(id){
+    var slot = document.getElementById("fbSlot");
+    if(!slot) return;
+    var rec = state.drafts[id];
+    if(!rec || !rec.feedback){ slot.innerHTML = ""; return; }
+    var fb = rec.feedback;
+    var html = '<div class="card feedback"><div class="fb-head">';
+    html += '<div class="score-ring" style="--sc:' + fb.overall + '"><span>' + fb.overall.toFixed(1) + '</span></div>';
+    html += '<div><div class="fb-title">Nhận xét từ AI</div><div class="fb-sub">' + (rec.updatedAt ? "cập nhật " + timeAgo(rec.updatedAt) : "") + '</div></div>';
+    html += '</div>';
+    if(fb.criteria.length){
+      html += '<div>';
+      fb.criteria.forEach(function(c){
+        html += '<div class="crit-row"><span class="crit-name">' + escapeHtml(c.name) + '</span>' +
+          '<span class="crit-bar"><i style="width:' + (c.score*10) + '%"></i></span>' +
+          '<span class="crit-score">' + c.score.toFixed(1) + '</span></div>';
+      });
+      html += '</div>';
+    }
+    if(fb.strengths.length){
+      html += '<div class="fb-block strengths"><h4>Điểm mạnh</h4><ul>';
+      fb.strengths.forEach(function(s){ html += '<li>' + escapeHtml(s) + '</li>'; });
+      html += '</ul></div>';
+    }
+    if(fb.gaps.length){
+      html += '<div class="fb-block gaps"><h4>Câu hỏi để bạn tự bổ sung</h4><ul>';
+      fb.gaps.forEach(function(s){ html += '<li>' + escapeHtml(s) + '</li>'; });
+      html += '</ul></div>';
+    }
+    if(fb.sources && fb.sources.length){
+      html += '<div class="fb-block srcuse"><h4>Gợi ý dùng nguồn nghiên cứu</h4><ul>';
+      fb.sources.forEach(function(s){ html += '<li>' + escapeHtml(s) + '</li>'; });
+      html += '</ul></div>';
+    }
+    if(fb.next_step) html += '<div class="hint-box">👉 ' + escapeHtml(fb.next_step) + '</div>';
+    html += '</div>';
+    slot.innerHTML = html;
+  }
+
+  /* ---------- Sources & guidelines view ---------- */
+  function renderSources(){
+    var keys = Object.keys(SOURCES);
+    var vn = keys.filter(function(k){ return SOURCES[k].origin === "VN"; }).length;
+    var html = '<div class="crumb">CƠ SỞ ĐÁNH GIÁ</div><h2>19 nguồn nghiên cứu &amp; quy ước của nhóm</h2>';
+    html += '<div class="ov-summary">';
+    html += '<div class="ov-stat"><div class="num">' + keys.length + '</div><div class="lbl">Nguồn nghiên cứu</div></div>';
+    html += '<div class="ov-stat"><div class="num">' + vn + '</div><div class="lbl">Nguồn Việt Nam</div></div>';
+    html += '<div class="ov-stat"><div class="num">' + (keys.length - vn) + '</div><div class="lbl">Nguồn quốc tế</div></div>';
+    html += '<div class="ov-stat"><div class="num">' + OUTLINE.length + '</div><div class="lbl">Đầu việc</div></div>';
+    html += '</div>';
+
+    html += '<div class="card"><h3>Quy ước bắt buộc — Claude áp dụng khi chấm mọi mục</h3>';
+    GUIDELINES.forEach(function(g){
+      html += '<div class="guide-item"><div class="gt">' + escapeHtml(g.id + ". " + g.title) + '</div><div class="gb">' + escapeHtml(g.body) + '</div></div>';
+    });
+    html += '</div>';
+
+    html += '<div class="card"><h3>Danh sách nguồn — dùng cho mục nào</h3><div class="src-list">';
+    keys.forEach(function(k){
+      var usedIn = OUTLINE.filter(function(s){ return s.src && s.src.indexOf(k) !== -1; }).map(function(s){ return s.id; });
+      html += srcItemHtml(k).replace('</div></div>', '</div><div class="used-in">Dùng cho mục: ' +
+        (usedIn.length ? escapeHtml(usedIn.join(", ")) : "chưa gắn mục nào") + '</div></div>');
+    });
+    html += '</div></div>';
+    html += '<footer class="note">Khi nhóm bổ sung bài nghiên cứu mới hoặc cập nhật file góp ý, hãy báo để cập nhật phần này — toàn bộ phần chấm điểm và gợi ý sẽ tự động dùng cơ sở mới.</footer>';
+    stageEl.innerHTML = html;
+  }
+
+  /* ---------- Utils ---------- */
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function debounce(fn, ms){ var t; return function(){ var a = arguments; clearTimeout(t); t = setTimeout(function(){ fn.apply(null, a); }, ms); }; }
+  function timeAgo(ts){
+    var s = Math.floor((Date.now() - ts) / 1000);
+    if(s < 60) return "vừa xong";
+    if(s < 3600) return Math.floor(s/60) + " phút trước";
+    if(s < 86400) return Math.floor(s/3600) + " giờ trước";
+    return Math.floor(s/86400) + " ngày trước";
+  }
+
+  /* ---------- Boot ---------- */
+  render();
+})();
+</script>
+
+</body>
+</html>
+
+

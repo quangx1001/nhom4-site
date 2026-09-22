@@ -16,7 +16,34 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Chua cau hinh GEMINI_API_KEY tren Vercel." });
   }
 
-  const MODELS = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash"];
+  async function listModels() {
+    try {
+      const r = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models?key=" + apiKey + "&pageSize=100"
+      );
+      const data = await r.json().catch(() => ({}));
+      const models = (data.models || [])
+        .filter((m) => (m.supportedGenerationMethods || []).includes("generateContent"))
+        .map((m) => (m.name || "").replace("models/", ""));
+      // Uu tien flash 3.x, roi den flash khac, roi den con lai
+      models.sort((a, b) => {
+        const score = (n) => {
+          n = n.toLowerCase();
+          if (n.includes("3.6") && n.includes("flash")) return 0;
+          if (n.includes("3") && n.includes("flash")) return 1;
+          if (n.includes("flash")) return 2;
+          return 3;
+        };
+        return score(a) - score(b);
+      });
+      return models.slice(0, 5);
+    } catch {
+      return [];
+    }
+  }
+
+  const discovered = await listModels();
+  const MODELS = discovered.length ? discovered : ["gemini-3.6-flash"];
 
   let lastError = "Gemini bao loi.";
   for (const model of MODELS) {

@@ -16,32 +16,41 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Chua cau hinh GEMINI_API_KEY tren Vercel." });
   }
 
-  try {
-    const r = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=" + apiKey,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt.slice(0, 8000) }] }],
-          generationConfig: { temperature: 0.3, maxOutputTokens: 4000, responseMimeType: "application/json" }
-        })
+  const MODELS = ["gemini-2.5-flash", "gemini-3.6-flash", "gemini-1.5-flash"];
+
+  let lastError = "Gemini bao loi.";
+  for (const model of MODELS) {
+    try {
+      const r = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt.slice(0, 8000) }] }],
+            generationConfig: { temperature: 0.3, maxOutputTokens: 4000, responseMimeType: "application/json" }
+          })
+        }
+      );
+
+      const data = await r.json().catch(() => ({}));
+      const text = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts || [])
+        .map((p) => p.text || "")
+        .join("");
+
+      if (r.ok && text) {
+        return res.status(200).json({ text });
       }
-    );
-
-    const data = await r.json().catch(() => ({}));
-    const text = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts || [])
-      .map((p) => p.text || "")
-      .join("");
-
-    if (!r.ok) {
-      return res.status(500).json({ error: (data.error && data.error.message) || "Gemini bao loi." });
+      lastError = (data.error && data.error.message) || ("Loi model " + model);
+      // Model qua tai / het quota -> thu model tiep theo ngay
+      const retryable = r.status === 429 || r.status === 500 || r.status === 503 ||
+        /high demand|overloaded|quota|try again/i.test(lastError);
+      if (!retryable) {
+        return res.status(500).json({ error: lastError });
+      }
+    } catch (e) {
+      lastError = "Loi ket noi toi Gemini.";
     }
-    if (!text) {
-      return res.status(500).json({ error: "Gemini khong tra ve noi dung." });
-    }
-    return res.status(200).json({ text });
-  } catch (e) {
-    return res.status(500).json({ error: "Loi ket noi toi Gemini." });
   }
+  return res.status(500).json({ error: lastError });
 }

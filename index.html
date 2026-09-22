@@ -908,7 +908,13 @@
     if(start === -1) throw new Error("không tìm thấy JSON");
     var end = c.lastIndexOf(endCh);
     if(end <= start) throw new Error("JSON không hoàn chỉnh");
-    return JSON.parse(c.slice(start, end+1));
+    var jsonStr = c.slice(start, end+1);
+    jsonStr = jsonStr.replace(/,\s*([}\]])/g, "$1");
+    try{ return JSON.parse(jsonStr); }
+    catch(e1){
+      var fixed = jsonStr.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+      return JSON.parse(fixed);
+    }
   }
 
   function buildPrompt(sec, draftText){

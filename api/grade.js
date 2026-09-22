@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Chua cau hinh GEMINI_API_KEY tren Vercel." });
   }
 
-  const MODELS = ["gemini-2.5-flash", "gemini-3.6-flash", "gemini-1.5-flash"];
+  const MODELS = ["gemini-3.6-flash", "gemini-2.5-flash", "gemini-1.5-flash"];
 
   let lastError = "Gemini bao loi.";
   for (const model of MODELS) {
@@ -43,8 +43,8 @@ export default async function handler(req, res) {
       }
       lastError = (data.error && data.error.message) || ("Loi model " + model);
       // Model qua tai / het quota -> thu model tiep theo ngay
-      const retryable = r.status === 429 || r.status === 500 || r.status === 503 ||
-        /high demand|overloaded|quota|try again/i.test(lastError);
+      const retryable = r.status === 429 || r.status === 500 || r.status === 503 || r.status === 404 ||
+        /high demand|overloaded|quota|try again|no longer available|not available|not found|unsupported/i.test(lastError);
       if (!retryable) {
         return res.status(500).json({ error: lastError });
       }

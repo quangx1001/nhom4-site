@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bài tiểu luận Nhóm 4</title>
-<meta name="description" content="Bàn luyện viết cho bài tổng quan tài liệu AI trong y tế: viết bằng lời của chính bạn, Claude chấm và gợi mở dựa trên 19 nguồn nghiên cứu và quy ước của nhóm.">
+<meta name="description" content="Bàn luyện viết cho bài tổng quan tài liệu AI trong y tế: viết bằng lời của chính bạn, AI chấm và gợi mở dựa trên 27 nguồn nghiên cứu và quy ước của nhóm.">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -194,7 +194,7 @@
     </div>
     <div class="view-toggle" id="viewToggle">
       <button data-view="practice" class="active">Luyện viết</button>
-      <button data-view="sources">19 nguồn &amp; quy ước</button>
+      <button data-view="sources">27 nguồn &amp; quy ước</button>
     </div>
     <div class="progress-pill" id="progressPill" title="Số đầu việc đã được chấm điểm">
       <span class="ring" id="progressRing"></span>
@@ -216,24 +216,22 @@
   /* ============================================================
      CƠ SỞ DỮ LIỆU TỰ THÂN CỦA ARTIFACT
      - GUIDELINES: quy ước chung trích từ gop_y.docx (cập nhật khi nhóm gửi bản mới)
-     - SOURCES:    19 bài nghiên cứu trong thư mục "Nguồn tham khảo"
+     - SOURCES:    27 bài nghiên cứu trong thư mục "Nguồn tham khảo"
      - OUTLINE:    38 đầu việc theo sheet "phan_cong_chi_tiet" của Phan_cong.xlsx
      ============================================================ */
 
   var GUIDELINES = [
     {
-      id: "G1",
       title: "Dùng đúng thuật ngữ: \"AI trong y tế\" là phạm vi chính, \"AI agent\" là một nhóm bên trong",
       body: "Nhiều nghiên cứu nhóm thu thập nói về Machine Learning, Deep Learning, NLP, chatbot, hệ hỗ trợ quyết định và phân tích hình ảnh — những công nghệ này không đương nhiên là AI agent. Chỉ gọi là \"AI agent\" khi hệ thống trong nghiên cứu thực sự có khả năng: tự nhận biết/xác định nhiệm vụ, lập kế hoạch thực hiện, sử dụng công cụ hoặc dữ liệu, thực hiện quy trình nhiều bước, và tương tác với con người dưới sự giám sát. Nếu phạm vi bao quát mọi công nghệ AI thì lấy \"AI trong y tế\" làm phạm vi chính."
     },
     {
-      id: "G2",
       title: "Không gọi H1/H2/H3 là giả thuyết nghiên cứu — gọi là \"mệnh đề phân tích\"",
       body: "Đây là bài tổng quan tài liệu, nhóm không khảo sát sơ cấp và không kiểm định thống kê mới. Vì vậy không dùng các cụm \"giả thuyết được chấp nhận/bác bỏ\", \"kiểm định giả thuyết\". Nếu vẫn giữ H1, H2, H3 thì gọi là \"mệnh đề phân tích\" hoặc \"định hướng phân tích\", và đối chiếu chúng với bằng chứng đã công bố thay vì khẳng định đã kiểm định."
     }
   ];
 
-  /* ---------- 19 nguồn tham khảo ---------- */
+  /* ---------- 27 nguồn tham khảo ---------- */
   var SOURCES = {
     S1: { label: "Đại Trần Lê Vương (2025)", origin: "VN", group: "Tổng quan VN",
           method: "Scoping review 37 nghiên cứu AI y tế Việt Nam, giai đoạn 2018–2024",
@@ -291,24 +289,47 @@
           findings: "Giảm 41% xung đột lịch trực, giảm 18% thời gian chờ của bệnh nhân, tăng 14% mức độ hài lòng; mô hình dự báo đạt R² = 0,91." },
     S19: { label: "Xu và cộng sự (2026)", origin: "QT", group: "Nền tảng & đạo đức",
           method: "Khảo sát tổng quan hơn 200 nghiên cứu về AI agent trong y tế",
-          findings: "Chia hệ sinh thái thành ba trụ cột: Perception (nhận thức dữ liệu lâm sàng đa phương thức), Agent Capabilities (dùng công cụ, suy luận, ghi nhớ, phối hợp đa tác tử) và Application Ecosystem (tổ chức theo vai trò: bác sĩ, bệnh nhân, nhà nghiên cứu, nhà quản trị)." }
+          findings: "Chia hệ sinh thái thành ba trụ cột: Perception (nhận thức dữ liệu lâm sàng đa phương thức), Agent Capabilities (dùng công cụ, suy luận, ghi nhớ, phối hợp đa tác tử) và Application Ecosystem (tổ chức theo vai trò: bác sĩ, bệnh nhân, nhà nghiên cứu, nhà quản trị)." },
+    S20: { label: "Gomez-Cabello và cộng sự (2024)", origin: "QT", group: "Hỗ trợ bác sĩ",
+          method: "Scoping review theo PRISMA-ScR, sàng lọc 421 nghiên cứu về AI-CDSS tại tuyến chăm sóc ban đầu",
+          findings: "Chỉ 6/421 nghiên cứu đạt tiêu chí thực nghiệm lâm sàng thực tế; trong đó 3/6 đạt mục tiêu đề ra, 2/6 đạt một phần, 1/6 bị đánh giá không phù hợp bối cảnh." },
+    S21: { label: "Harada và cộng sự (2021)", origin: "QT", group: "Hỗ trợ bác sĩ",
+          method: "Thử nghiệm ngẫu nhiên có đối chứng, so sánh danh sách chẩn đoán phân biệt của AI với bác sĩ",
+          findings: "Tỷ lệ chẩn đoán đúng khi có hỗ trợ AI đạt 70,2% so với 55,1% khi không có hỗ trợ (p<0,001)." },
+    S22: { label: "Goh và cộng sự (2024)", origin: "QT", group: "Hỗ trợ bác sĩ",
+          method: "Thử nghiệm ngẫu nhiên có đối chứng (RCT), đơn mù; bác sĩ đa chuyên khoa giải ca lâm sàng có hoặc không có hỗ trợ LLM",
+          findings: "Độ chính xác chẩn đoán 76% (có LLM) so với 74% (không có LLM), khác biệt không có ý nghĩa thống kê (p=0,60); LLM hoạt động độc lập cao hơn nhóm bác sĩ kết hợp LLM 16 điểm % (p=0,03)." },
+    S23: { label: "Trần Bá Kiên & Văn Công Khánh (2025)", origin: "VN", group: "Trải nghiệm bệnh nhân",
+          method: "Chatbot dược sĩ ảo tích hợp cơ sở dữ liệu thuốc (NLP + Gemini API), thử nghiệm 200 kịch bản và 7 ngày tại nhà thuốc cộng đồng",
+          findings: "94% phản hồi chính xác và đầy đủ trên 200 kịch bản chuẩn hóa; 88% người dùng đánh giá hữu ích hoặc rất hữu ích; thời gian phản hồi trung bình 1,8 giây." },
+    S24: { label: "Bùi Trọng Dương và cộng sự (2026)", origin: "VN", group: "Hỗ trợ bác sĩ",
+          method: "Phần mềm AI DrAid hỗ trợ đọc 637 phim X-quang ngực thẳng tại BV Trung ương Quân đội 108, đối chiếu bác sĩ chẩn đoán hình ảnh",
+          findings: "Độ nhạy 64,58–85,91%, độ đặc hiệu 83–98,52%, AUC 0,792–0,885 (cao hơn bác sĩ ở hầu hết tổn thương); tiết kiệm 21% thời gian đọc phim." },
+    S25: { label: "Lê Minh Đạt và cộng sự (2025)", origin: "VN", group: "Vận hành nội bộ",
+          method: "Mô hình AI-VoiceCare (CNN phân tích phổ Mel) quản lý hồ sơ điện tử, 312 bệnh nhân rối loạn giọng tại BV Đại học Y Hà Nội",
+          findings: "Độ chính xác phân loại 92,1%; giảm 61,1% thời gian xử lý hồ sơ, giảm 60,9% sai sót ghi chép; tỷ lệ tái khám đúng hẹn tăng từ 48,7% lên 76,3%." },
+    S26: { label: "Trần Thị Nhung (2025)", origin: "VN", group: "Vận hành nội bộ",
+          method: "Tổng quan tài liệu và tiêu chuẩn ngành về AI trong quản lý chất lượng xét nghiệm y khoa tại BV Vinmec Times City",
+          findings: "Chính xác huyết học 88,6%→95,4%; thời gian phân tích 28,5→9,7 phút/mẫu; mẫu xử lý/ngày +67,4%; dùng thiết bị 69,4%→86,7%." },
+    S27: { label: "Chen, Wang & Sun (2025)", origin: "QT", group: "Trải nghiệm bệnh nhân",
+          method: "Khảo sát 319 người dùng, mô hình PLS-SEM, khung tích hợp nhận thức - kỹ thuật - xã hội",
+          findings: "Ảnh hưởng xã hội (β=0,206, p<0,01), đồng cảm AI (β=0,150, p<0,05) và tự tin công nghệ số (β=0,197, p<0,01) tác động tích cực đến ý định dùng; niềm tin trung gian một phần; mô hình giải thích 65,6% biến thiên ý định sử dụng." }
   };
 
   /* ---------- 38 đầu việc theo sheet phan_cong_chi_tiet ---------- */
   var OUTLINE = [
     { ch: "Phần đầu", id: "0.1", stt: 1, title: "Tên đề tài",
       task: "Chốt tên tiếng Việt, tên tiếng Anh và phạm vi nghiên cứu.",
-      output: "Tên đề tài chính thức", owner: "TV1", support: "TV3", week: "Tuần 1",
-      note: "Dùng thuật ngữ AI trong y tế nếu nguồn không tập trung riêng vào AI agent.",
+      output: "Tên đề tài chính thức", owner: "Quang", support: "Sương", week: "27/09/2026 17:00",
       src: ["S12", "S19", "S1"],
       rubric: ["Tên phản ánh đúng phạm vi ba nhóm chủ thể: vận hành nội bộ, bệnh nhân, bác sĩ",
-        "Chọn thuật ngữ đúng theo quy ước G1 (AI trong y tế / AI agent), có lý do kèm theo",
+        "Chọn thuật ngữ đúng (AI trong y tế / AI agent), có lý do kèm theo",
         "Có cả tên tiếng Việt và tiếng Anh, diễn đạt tương đương nhau",
-        "Phạm vi trong tên không rộng hơn những gì 19 nguồn thực sự bao phủ"] },
+        "Phạm vi trong tên không rộng hơn những gì 27 nguồn thực sự bao phủ"] },
 
     { ch: "Phần đầu", id: "0.2", stt: 2, title: "Tóm tắt và từ khóa",
       task: "Viết tóm tắt gồm bối cảnh, mục tiêu, phương pháp, kết quả tổng hợp và kết luận.",
-      output: "Tóm tắt 200–300 từ, 5–7 từ khóa", owner: "TV10", support: "TV1", week: "Tuần 5",
+      output: "Tóm tắt 200–300 từ, 5–7 từ khóa", owner: "Kino", support: "Quang", week: "28/09/2026 20:00",
       note: "Hoàn thiện sau khi Chương 4 và Chương 5 đã thống nhất.",
       src: ["S1", "S18", "S7", "S13", "S4"],
       rubric: ["Có đủ 5 thành phần: bối cảnh – mục tiêu – phương pháp – kết quả – kết luận",
@@ -318,17 +339,17 @@
 
     { ch: "Phần đầu", id: "0.3", stt: 3, title: "Danh mục thuật ngữ",
       task: "Giải thích AI, ML, DL, NLP, GenAI, AI agent, CDSS, EHR, XAI và Human-in-the-loop.",
-      output: "Danh mục thuật ngữ và chữ viết tắt", owner: "TV2", support: "TV8", week: "Tuần 2",
+      output: "Danh mục thuật ngữ và chữ viết tắt", owner: "Kim Anh", support: "Đạt", week: "27/09/2026 17:00",
       note: "Mỗi thuật ngữ phải có nguồn tham khảo.",
       src: ["S12", "S19", "S13", "S10"],
       rubric: ["Đủ 10 thuật ngữ được yêu cầu, mỗi thuật ngữ một định nghĩa ngắn gọn",
-        "Mỗi định nghĩa gắn với ít nhất một nguồn cụ thể trong 19 nguồn",
+        "Mỗi định nghĩa gắn với ít nhất một nguồn cụ thể trong 27 nguồn",
         "Phân biệt rõ AI agent với công cụ AI truyền thống (theo bốn thành phần của Liu, 2025)",
         "XAI và Human-in-the-loop được gắn với vai trò giám sát của con người"] },
 
     { ch: "Phần đầu", id: "0.4", stt: 4, title: "Mục lục, danh mục bảng/hình",
       task: "Tạo mục lục tự động, danh mục bảng và danh mục hình sau khi nội dung hoàn chỉnh.",
-      output: "Mục lục hoàn chỉnh", owner: "TV10", support: "TV1", week: "Tuần 5",
+      output: "Mục lục hoàn chỉnh", owner: "Kino", support: "Quang", week: "28/09/2026 20:00",
       note: "Kiểm tra lại số trang trước khi nộp.",
       src: [],
       rubric: ["Mục lục sinh tự động, cấp bậc đúng với cấu trúc chương/tiểu mục",
@@ -337,17 +358,17 @@
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.1", stt: 5, title: "Bối cảnh nghiên cứu",
       task: "Trình bày sự phát triển của AI, nhu cầu chuyển đổi số và áp lực trong ngành y tế.",
-      output: "2–3 trang bối cảnh", owner: "TV1", support: "TV2", week: "Tuần 1",
+      output: "2–3 trang bối cảnh", owner: "Quang", support: "Kim Anh", week: "27/09/2026 17:00",
       note: "Tập trung vào ba nhóm: nhân viên, bệnh nhân và bác sĩ.",
       src: ["S10", "S1", "S12", "S19", "S2"],
       rubric: ["Có ít nhất 2 số liệu cụ thể, mỗi số liệu dẫn đúng nguồn",
         "Phân biệt rõ bối cảnh quốc tế và bối cảnh Việt Nam",
         "Nêu được áp lực riêng của cả ba nhóm: nhân viên, bệnh nhân, bác sĩ",
-        "Dùng thuật ngữ đúng theo quy ước G1, không đánh đồng AI nói chung với AI agent"] },
+        "Dùng thuật ngữ đúng, không đánh đồng AI nói chung với AI agent"] },
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.2", stt: 6, title: "Lý do nghiên cứu",
       task: "Giải thích sự phân tán của các nghiên cứu về AI trong y tế và nhu cầu tổng hợp theo ba nhóm chủ thể.",
-      output: "Phần lý do chọn đề tài", owner: "TV1", support: "TV3", week: "Tuần 1",
+      output: "Phần lý do chọn đề tài", owner: "Quang", support: "Sương", week: "27/09/2026 17:00",
       note: "Không khẳng định khoảng trống nếu chưa có nguồn chứng minh.",
       src: ["S1", "S19", "S5"],
       rubric: ["Chỉ ra được sự phân tán cụ thể của tài liệu, không nói chung chung",
@@ -357,7 +378,7 @@
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.3", stt: 7, title: "Mục tiêu nghiên cứu",
       task: "Xây dựng bốn mục tiêu: phân loại ứng dụng, tổng hợp lợi ích/rủi ro, xác định khoảng trống và đề xuất khung triển khai.",
-      output: "Bốn mục tiêu cụ thể", owner: "TV1", support: "TV3", week: "Tuần 1",
+      output: "Bốn mục tiêu cụ thể", owner: "Quang", support: "Sương", week: "27/09/2026 17:00",
       note: "Mục tiêu phải khớp với câu hỏi nghiên cứu và Chương 4.",
       src: ["S1", "S19"],
       rubric: ["Đúng bốn mục tiêu như yêu cầu, mỗi mục tiêu bắt đầu bằng một động từ hành động",
@@ -367,17 +388,17 @@
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.4", stt: 8, title: "Câu hỏi nghiên cứu",
       task: "Xây dựng ba câu hỏi về ứng dụng, tác động và điều kiện triển khai AI.",
-      output: "Ba câu hỏi nghiên cứu", owner: "TV1", support: "TV3", week: "Tuần 1",
+      output: "Ba câu hỏi nghiên cứu", owner: "Quang", support: "Sương", week: "27/09/2026 17:00",
       note: "Không dùng giả thuyết kiểm định nếu không có dữ liệu khảo sát mới.",
       src: ["S1", "S19", "S10"],
       rubric: ["Đúng ba câu hỏi, ở dạng nghi vấn thực sự",
         "Bám đúng ba trục: ứng dụng – tác động – điều kiện triển khai",
-        "Không dùng ngôn ngữ giả thuyết kiểm định (theo quy ước G2)",
+        "Không dùng ngôn ngữ giả thuyết kiểm định",
         "Mỗi câu hỏi có thể trả lời được bằng dữ liệu thứ cấp đã thu thập"] },
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.5", stt: 9, title: "Đối tượng và phạm vi",
       task: "Xác định đối tượng là các bài nghiên cứu đã xuất bản; phạm vi thời gian, ngôn ngữ, cơ sở dữ liệu và chủ đề.",
-      output: "Phạm vi nghiên cứu rõ ràng", owner: "TV4", support: "TV1", week: "Tuần 1",
+      output: "Phạm vi nghiên cứu rõ ràng", owner: "Uyên", support: "Quang", week: "27/09/2026 17:00",
       note: "Nêu rõ bảy bài cốt lõi và các tài liệu bổ sung nếu có.",
       src: ["S1", "S12", "S19"],
       rubric: ["Nói rõ đối tượng nghiên cứu là tài liệu đã xuất bản, không phải bệnh nhân hay bệnh viện",
@@ -387,7 +408,7 @@
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.6", stt: 10, title: "Ý nghĩa nghiên cứu",
       task: "Nêu ý nghĩa học thuật và thực tiễn đối với cơ sở y tế, nhân viên, bệnh nhân và bác sĩ.",
-      output: "Phần ý nghĩa nghiên cứu", owner: "TV1", support: "TV9", week: "Tuần 1",
+      output: "Phần ý nghĩa nghiên cứu", owner: "Quang", support: "Chăm Anh", week: "27/09/2026 17:00",
       note: "Phân biệt ý nghĩa học thuật và ý nghĩa ứng dụng.",
       src: ["S12", "S19", "S10"],
       rubric: ["Tách bạch rõ ý nghĩa học thuật và ý nghĩa thực tiễn, không gộp chung",
@@ -397,7 +418,7 @@
 
     { ch: "Chương 1: Tổng quan về nghiên cứu", id: "1.7", stt: 11, title: "Kết cấu bài",
       task: "Giới thiệu ngắn gọn nội dung của năm chương.",
-      output: "Phần kết cấu bài", owner: "TV10", support: "TV1", week: "Tuần 5",
+      output: "Phần kết cấu bài", owner: "Kino", support: "Quang", week: "28/09/2026 20:00",
       note: "Viết sau khi các chương đã ổn định.",
       src: [],
       rubric: ["Tóm tắt đúng thứ tự và đúng nội dung thực tế của năm chương",
@@ -406,7 +427,7 @@
 
     { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.1", stt: 12, title: "Các khái niệm",
       task: "Định nghĩa AI, ML, DL, NLP, GenAI, AI agent, CDSS và AI trong y tế.",
-      output: "Cơ sở khái niệm", owner: "TV2", support: "TV3", week: "Tuần 2",
+      output: "Cơ sở khái niệm", owner: "Kim Anh", support: "Sương", week: "27/09/2026 17:00",
       note: "Không đồng nhất AI nói chung với AI agent.",
       src: ["S12", "S19", "S13"],
       rubric: ["Định nghĩa đủ các khái niệm được yêu cầu, mỗi khái niệm có nguồn",
@@ -416,7 +437,7 @@
 
     { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.2", stt: 13, title: "Cơ sở lý thuyết",
       task: "Trình bày hệ thống kỹ thuật–xã hội, AI tăng cường, tương tác người–AI, niềm tin và giám sát con người.",
-      output: "Phần cơ sở lý thuyết", owner: "TV3", support: "TV2", week: "Tuần 2",
+      output: "Phần cơ sở lý thuyết", owner: "Sương", support: "Kim Anh", week: "27/09/2026 17:00",
       note: "Chỉ gọi là lý thuyết khi có nguồn học thuật phù hợp.",
       src: ["S10", "S6", "S11", "S3"],
       rubric: ["Mỗi lý thuyết/khung nêu ra đều có nguồn học thuật đi kèm",
@@ -426,9 +447,9 @@
 
     { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.3", stt: 14, title: "Tổng quan nghiên cứu trước",
       task: "Tổng hợp bảy bài nghiên cứu cốt lõi theo ba nhóm: vận hành nội bộ, trải nghiệm bệnh nhân và hỗ trợ bác sĩ.",
-      output: "Bảng tổng hợp nghiên cứu trước", owner: "TV3", support: "TV8", week: "Tuần 2",
+      output: "Bảng tổng hợp nghiên cứu trước", owner: "Sương", support: "Đạt", week: "27/09/2026 17:00",
       note: "Bảy bài cốt lõi không nhất thiết là toàn bộ tài liệu tham khảo.",
-      src: ["S18", "S16", "S17", "S8", "S7", "S15", "S11", "S3", "S13", "S9", "S14", "S4", "S1", "S2"],
+      src: ["S18", "S16", "S17", "S8", "S25", "S26", "S7", "S15", "S11", "S3", "S23", "S27", "S13", "S9", "S14", "S4", "S24", "S20", "S21", "S22", "S1", "S2"],
       rubric: ["Phân đúng ba nhóm, mỗi nhóm chọn 2–3 nghiên cứu tiêu biểu thay vì liệt kê hết",
         "Mỗi nghiên cứu nêu được phương pháp gốc và một số liệu đại diện",
         "Phân biệt rõ đâu là bằng chứng quốc tế, đâu là bằng chứng Việt Nam",
@@ -436,17 +457,17 @@
 
     { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.4", stt: 15, title: "Khoảng trống và mệnh đề phân tích",
       task: "Xác định khoảng trống nghiên cứu và xây dựng ba mệnh đề phân tích thay cho giả thuyết kiểm định.",
-      output: "Ba mệnh đề phân tích", owner: "TV1", support: "TV3", week: "Tuần 2",
+      output: "Ba mệnh đề phân tích", owner: "Quang", support: "Sương", week: "27/09/2026 17:00",
       note: "Mệnh đề phải được tổng hợp từ các nghiên cứu đã công bố.",
       src: ["S1", "S3", "S4", "S6"],
-      rubric: ["Gọi đúng tên \"mệnh đề phân tích\", tuyệt đối không dùng ngôn ngữ giả thuyết kiểm định (quy ước G2)",
+      rubric: ["Gọi đúng tên \"mệnh đề phân tích\", tuyệt đối không dùng ngôn ngữ giả thuyết kiểm định",
         "Đúng ba mệnh đề, mỗi mệnh đề gắn với một nhóm chủ thể",
         "Mỗi mệnh đề dẫn được ít nhất một nghiên cứu đã công bố làm cơ sở",
         "Khoảng trống nêu ra có dẫn chứng, đặc biệt là mảng vận hành nội bộ tại Việt Nam"] },
 
     { ch: "Chương 2: Cơ sở lý thuyết và khung phân tích", id: "2.5", stt: 16, title: "Khung phân tích tổng hợp",
       task: "Xây dựng mô hình: AI → nhóm chủ thể → cơ chế tác động → kết quả → rủi ro và điều kiện triển khai.",
-      output: "Hình 2.1 và phần giải thích", owner: "TV3", support: "TV9", week: "Tuần 2",
+      output: "Hình 2.1 và phần giải thích", owner: "Sương", support: "Chăm Anh", week: "27/09/2026 17:00",
       note: "Khung phân tích không phải mô hình nhân quả mới.",
       src: ["S12", "S19", "S10"],
       rubric: ["Mô tả đủ năm khối theo đúng thứ tự logic của khung",
@@ -456,7 +477,7 @@
 
     { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.1", stt: 17, title: "Quy trình nghiên cứu",
       task: "Trình bày các bước tìm kiếm, sàng lọc, phân loại, đánh giá và tổng hợp tài liệu.",
-      output: "Sơ đồ quy trình nghiên cứu", owner: "TV4", support: "TV1", week: "Tuần 2",
+      output: "Sơ đồ quy trình nghiên cứu", owner: "Uyên", support: "Quang", week: "27/09/2026 17:00",
       note: "Có thể trình bày bằng sơ đồ PRISMA nếu đủ dữ liệu.",
       src: ["S1"],
       rubric: ["Nêu đủ các bước theo đúng thứ tự, mỗi bước nói rõ làm gì",
@@ -466,7 +487,7 @@
 
     { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.2", stt: 18, title: "Phương pháp nghiên cứu",
       task: "Nêu rõ đây là nghiên cứu tổng quan tài liệu dựa trên dữ liệu thứ cấp, kết hợp thống kê mô tả và tổng hợp chủ đề.",
-      output: "Phần phương pháp", owner: "TV4", support: "TV8", week: "Tuần 2",
+      output: "Phần phương pháp", owner: "Uyên", support: "Đạt", week: "27/09/2026 17:00",
       note: "Không gọi là nghiên cứu định lượng nếu chỉ lập biểu đồ mô tả.",
       src: [],
       rubric: ["Gọi đúng tên phương pháp: tổng quan tài liệu trên dữ liệu thứ cấp",
@@ -476,7 +497,7 @@
 
     { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.3", stt: 19, title: "Thu thập dữ liệu",
       task: "Xác định cơ sở dữ liệu, từ khóa, tiêu chí đưa vào và tiêu chí loại trừ tài liệu.",
-      output: "Bộ từ khóa và tiêu chí lựa chọn", owner: "TV4", support: "TV5, TV6, TV7", week: "Tuần 2",
+      output: "Bộ từ khóa và tiêu chí lựa chọn", owner: "Uyên", support: "Trâm Đặng, Duyên, Phương Phạm", week: "27/09/2026 17:00",
       note: "Mọi thành viên dùng chung tiêu chí sàng lọc.",
       src: ["S1"],
       rubric: ["Liệt kê cụ thể các cơ sở dữ liệu đã tìm kiếm",
@@ -486,7 +507,7 @@
 
     { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.4", stt: 20, title: "Xử lý dữ liệu",
       task: "Mã hóa tài liệu theo nhóm chủ thể, công nghệ, mục đích, lợi ích, rủi ro và kết quả.",
-      output: "Bảng mã hóa dữ liệu", owner: "TV8", support: "TV4", week: "Tuần 3",
+      output: "Bảng mã hóa dữ liệu", owner: "Đạt", support: "Uyên", week: "27/09/2026 17:00",
       note: "Dùng cùng một mẫu trích xuất cho toàn nhóm.",
       src: [],
       rubric: ["Nêu đủ sáu trường mã hóa được yêu cầu",
@@ -496,7 +517,7 @@
 
     { ch: "Chương 3: Phương pháp nghiên cứu", id: "3.5", stt: 21, title: "Đảm bảo độ tin cậy",
       task: "Quy định mỗi tài liệu quan trọng được ít nhất hai thành viên kiểm tra và xử lý bất đồng.",
-      output: "Quy trình kiểm tra chéo", owner: "TV8", support: "TV1", week: "Tuần 3",
+      output: "Quy trình kiểm tra chéo", owner: "Đạt", support: "Quang", week: "27/09/2026 17:00",
       note: "Ghi lại lý do loại hoặc giữ tài liệu.",
       src: [],
       rubric: ["Quy trình hai người kiểm tra được mô tả cụ thể, ai làm gì",
@@ -506,7 +527,7 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.1", stt: 22, title: "Đặc điểm tài liệu được chọn",
       task: "Tổng hợp năm xuất bản, quốc gia, loại nghiên cứu, nhóm chủ thể và loại công nghệ AI.",
-      output: "Bảng 4.1 và hai biểu đồ", owner: "TV8", support: "TV10", week: "Tuần 3",
+      output: "Bảng 4.1 và hai biểu đồ", owner: "Đạt", support: "Kino", week: "27/09/2026 17:00",
       note: "Có thể dùng bảy bài cốt lõi và nhóm tài liệu bổ sung.",
       src: ["S1", "S12", "S19", "S18", "S7", "S13", "S4", "S3", "S6"],
       rubric: ["Số liệu thống kê khớp với danh sách nguồn thực tế của nhóm",
@@ -516,9 +537,9 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.2.1", stt: 23, title: "AI trong vận hành nội bộ",
       task: "Phân tích đặt lịch, quản lý hồ sơ, phân luồng, điều phối nhân sự, giao tiếp và giảm tải hành chính.",
-      output: "Phân tích nhóm nhân viên", owner: "TV5", support: "TV8", week: "Tuần 4",
+      output: "Phân tích nhóm nhân viên", owner: "Trâm Đặng", support: "Đạt", week: "27/09/2026 17:00",
       note: "Trình bày ứng dụng, lợi ích, rủi ro và khoảng trống.",
-      src: ["S18", "S16", "S17", "S8", "S2", "S1"],
+      src: ["S18", "S16", "S17", "S8", "S25", "S26", "S2", "S1"],
       rubric: ["Trình bày đủ bốn phần: ứng dụng – lợi ích – rủi ro – khoảng trống",
         "Mỗi con số dẫn đúng nguồn và đúng bối cảnh nghiên cứu gốc",
         "Chỉ ra được đây là mảng gần như chưa có bằng chứng thực nghiệm tại Việt Nam",
@@ -526,9 +547,9 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.2.2", stt: 24, title: "AI trong trải nghiệm bệnh nhân",
       task: "Phân tích chatbot, tư vấn, nhắc lịch, cá nhân hóa, sự hài lòng, niềm tin và tâm lý bệnh nhân.",
-      output: "Phân tích nhóm bệnh nhân", owner: "TV6", support: "TV8", week: "Tuần 4",
+      output: "Phân tích nhóm bệnh nhân", owner: "Duyên", support: "Đạt", week: "27/09/2026 17:00",
       note: "Tách trải nghiệm dịch vụ khỏi kết quả điều trị.",
-      src: ["S7", "S15", "S11", "S3"],
+      src: ["S7", "S15", "S11", "S3", "S23", "S27"],
       rubric: ["Tách bạch rõ trải nghiệm dịch vụ và kết quả điều trị — đây là lỗi dễ mắc nhất ở mục này",
         "Dùng đúng ngữ cảnh của chỉ số SMD = 0,69 (tuân thủ dùng thuốc, không phải sự hài lòng)",
         "Có bằng chứng Việt Nam về thái độ người bệnh kèm cỡ mẫu",
@@ -536,9 +557,9 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.2.3", stt: 25, title: "AI hỗ trợ bác sĩ",
       task: "Phân tích chẩn đoán, hình ảnh, dự đoán rủi ro, gợi ý điều trị và trách nhiệm chuyên môn.",
-      output: "Phân tích nhóm bác sĩ", owner: "TV7", support: "TV8", week: "Tuần 4",
+      output: "Phân tích nhóm bác sĩ", owner: "Phương Phạm", support: "Đạt", week: "27/09/2026 17:00",
       note: "Không khẳng định AI thay thế bác sĩ nếu nguồn không chứng minh.",
-      src: ["S13", "S9", "S14", "S4", "S10"],
+      src: ["S13", "S9", "S14", "S4", "S24", "S20", "S21", "S22", "S10"],
       rubric: ["Không có câu nào khẳng định AI thay thế bác sĩ",
         "Các số liệu về độ nhạy, độ đặc hiệu, tỷ lệ chính xác được dẫn đúng nguồn và đúng cỡ mẫu",
         "Nêu được bằng chứng thực nghiệm tại Việt Nam và giới hạn của nó",
@@ -546,9 +567,9 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.3", stt: 26, title: "So sánh quốc tế và Việt Nam",
       task: "So sánh các bằng chứng nghiên cứu quốc tế với tài liệu hiện có tại Việt Nam.",
-      output: "Bảng so sánh", owner: "TV9", support: "TV5, TV6, TV7", week: "Tuần 4",
+      output: "Bảng so sánh", owner: "Chăm Anh", support: "Trâm Đặng, Duyên, Phương Phạm", week: "27/09/2026 17:00",
       note: "Chỉ gọi là thực trạng nếu có đủ dữ liệu đại diện.",
-      src: ["S1", "S2", "S3", "S4", "S5", "S6", "S18", "S7", "S13"],
+      src: ["S1", "S2", "S3", "S4", "S5", "S6", "S18", "S7", "S13", "S23", "S24", "S25", "S26"],
       rubric: ["Bảng so sánh theo đúng ba nhóm chủ thể, hai cột quốc tế – Việt Nam",
         "Chỉ rõ mảng nào ở Việt Nam chưa có bằng chứng thực nghiệm",
         "Không gọi là \"thực trạng Việt Nam\" nếu chỉ dựa trên vài nghiên cứu lẻ",
@@ -556,9 +577,9 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.4", stt: 27, title: "Rào cản và rủi ro chung",
       task: "Phân tích bảo mật, thiên lệch, quyền riêng tư, thiếu minh bạch, tích hợp dữ liệu và phụ thuộc công nghệ.",
-      output: "Bảng lợi ích–rủi ro", owner: "TV9", support: "TV3", week: "Tuần 4",
+      output: "Bảng lợi ích–rủi ro", owner: "Chăm Anh", support: "Sương", week: "27/09/2026 17:00",
       note: "Phân biệt rủi ro được nghiên cứu và nhận định của nhóm.",
-      src: ["S6", "S1", "S11", "S10", "S2"],
+      src: ["S6", "S1", "S11", "S10", "S2", "S27"],
       rubric: ["Phân biệt rõ đâu là rủi ro đã được nghiên cứu ghi nhận, đâu là nhận định của nhóm",
         "Nêu được ít nhất bốn rào cản, mỗi rào cản có nguồn hoặc lập luận rõ",
         "Có nhắc tới cảm nhận bị đe dọa của chính nhân viên y tế kèm số liệu",
@@ -566,17 +587,17 @@
 
     { ch: "Chương 4: Kết quả nghiên cứu", id: "4.5", stt: 28, title: "Thảo luận kết quả",
       task: "Đối chiếu kết quả tổng hợp với cơ sở lý thuyết và các nghiên cứu trước.",
-      output: "Phần thảo luận", owner: "TV1", support: "TV3, TV9", week: "Tuần 4",
+      output: "Phần thảo luận", owner: "Quang", support: "Sương, Chăm Anh", week: "27/09/2026 17:00",
       note: "Trả lời trực tiếp các câu hỏi nghiên cứu.",
       src: ["S12", "S19", "S10", "S1"],
       rubric: ["Trả lời trực tiếp cả ba câu hỏi nghiên cứu đã đặt ở mục 1.4",
         "Đối chiếu từng mệnh đề phân tích với bằng chứng, nêu rõ mức độ được ủng hộ khác nhau",
-        "Không dùng cách nói \"giả thuyết được chấp nhận/bác bỏ\" (quy ước G2)",
+        "Không dùng cách nói \"giả thuyết được chấp nhận/bác bỏ\"",
         "Có đối chiếu ngược lại với khung phân tích ở mục 2.5"] },
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.1", stt: 29, title: "Định hướng phát triển",
       task: "Đề xuất định hướng ứng dụng AI trong y tế theo ba nhóm chủ thể.",
-      output: "Định hướng phát triển", owner: "TV10", support: "TV9", week: "Tuần 5",
+      output: "Định hướng phát triển", owner: "Kino", support: "Chăm Anh", week: "28/09/2026 20:00",
       note: "Phải dựa trên kết quả tổng quan.",
       src: ["S12", "S19", "S1"],
       rubric: ["Ba định hướng gắn đúng với ba nhóm chủ thể",
@@ -586,9 +607,9 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.2.1", stt: 30, title: "Giải pháp cho vận hành nội bộ",
       task: "Đề xuất giải pháp cho quản lý quy trình, nhân sự, hồ sơ và phối hợp nội bộ.",
-      output: "Nhóm giải pháp 1", owner: "TV5", support: "TV9", week: "Tuần 5",
+      output: "Nhóm giải pháp 1", owner: "Trâm Đặng", support: "Chăm Anh", week: "27/09/2026 17:00",
       note: "Nêu điều kiện triển khai và tiêu chí đánh giá.",
-      src: ["S18", "S16", "S17", "S8", "S2"],
+      src: ["S18", "S16", "S17", "S8", "S25", "S26", "S2"],
       rubric: ["Giải pháp cụ thể, khả thi, không chung chung kiểu \"cần đầu tư nhiều hơn\"",
         "Mỗi giải pháp nêu rõ điều kiện triển khai cần có",
         "Có tiêu chí đánh giá đo lường được cho từng giải pháp",
@@ -596,9 +617,9 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.2.2", stt: 31, title: "Giải pháp cho bệnh nhân",
       task: "Đề xuất giải pháp về minh bạch, hỗ trợ con người, bảo mật và cá nhân hóa.",
-      output: "Nhóm giải pháp 2", owner: "TV6", support: "TV9", week: "Tuần 5",
+      output: "Nhóm giải pháp 2", owner: "Duyên", support: "Chăm Anh", week: "27/09/2026 17:00",
       note: "Đặt trải nghiệm và quyền riêng tư của bệnh nhân làm trung tâm.",
-      src: ["S7", "S15", "S11", "S3"],
+      src: ["S7", "S15", "S11", "S3", "S23"],
       rubric: ["Đủ bốn hướng: minh bạch, hỗ trợ con người, bảo mật, cá nhân hóa",
         "Quyền riêng tư của người bệnh được đặt làm trung tâm, không chỉ nhắc qua",
         "Luôn có lối chuyển sang người thật khi AI không xử lý được",
@@ -606,9 +627,9 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.2.3", stt: 32, title: "Giải pháp cho bác sĩ",
       task: "Đề xuất giải pháp về kiểm tra kết quả AI, khả năng giải thích và giám sát chuyên môn.",
-      output: "Nhóm giải pháp 3", owner: "TV7", support: "TV9", week: "Tuần 5",
+      output: "Nhóm giải pháp 3", owner: "Phương Phạm", support: "Chăm Anh", week: "27/09/2026 17:00",
       note: "Duy trì quyền quyết định chuyên môn cuối cùng của bác sĩ.",
-      src: ["S13", "S9", "S14", "S4", "S10"],
+      src: ["S13", "S9", "S14", "S4", "S24", "S20", "S21", "S22", "S10"],
       rubric: ["Khẳng định rõ bác sĩ giữ quyền quyết định chuyên môn cuối cùng",
         "Có cơ chế kiểm chứng kết quả do AI đưa ra, mô tả được quy trình",
         "Yêu cầu về khả năng giải thích (XAI) được nêu cụ thể, không chỉ nhắc tên",
@@ -616,7 +637,7 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.3", stt: 33, title: "Giải pháp nền tảng",
       task: "Đề xuất giải pháp về dữ liệu, hạ tầng, đào tạo, pháp lý, đạo đức và quản trị AI.",
-      output: "Nhóm giải pháp chung", owner: "TV9", support: "TV4", week: "Tuần 5",
+      output: "Nhóm giải pháp chung", owner: "Chăm Anh", support: "Uyên", week: "27/09/2026 17:00",
       note: "Bao gồm bảo mật, công bằng, khả năng giải thích và giám sát con người.",
       src: ["S1", "S2", "S6", "S10"],
       rubric: ["Đủ sáu nhóm giải pháp nền tảng được yêu cầu",
@@ -626,7 +647,7 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.4", stt: 34, title: "Kế hoạch thực hiện",
       task: "Xây dựng lộ trình ngắn hạn, trung hạn và dài hạn.",
-      output: "Bảng 5.1 và lộ trình triển khai", owner: "TV10", support: "TV9", week: "Tuần 5",
+      output: "Bảng 5.1 và lộ trình triển khai", owner: "Kino", support: "Chăm Anh", week: "28/09/2026 20:00",
       note: "Đây là đề xuất của nhóm dựa trên tài liệu tổng hợp.",
       src: ["S12", "S1"],
       rubric: ["Ba mốc thời gian rõ ràng, hoạt động trọng tâm khác nhau ở mỗi mốc",
@@ -636,7 +657,7 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.5", stt: 35, title: "Hạn chế và hướng nghiên cứu",
       task: "Nêu hạn chế về số lượng nguồn, phạm vi dữ liệu, khác biệt phương pháp và hướng nghiên cứu tiếp theo.",
-      output: "Phần hạn chế và hướng phát triển", owner: "TV4", support: "TV1", week: "Tuần 5",
+      output: "Phần hạn chế và hướng phát triển", owner: "Uyên", support: "Quang", week: "27/09/2026 17:00",
       note: "Không che giấu các hạn chế của bài tổng quan.",
       src: ["S1"],
       rubric: ["Nêu thẳng hạn chế về số lượng nguồn và phạm vi dữ liệu, không giảm nhẹ",
@@ -646,17 +667,17 @@
 
     { ch: "Chương 5: Kết luận và giải pháp", id: "5.6", stt: 36, title: "Kết luận",
       task: "Trả lời trực tiếp ba câu hỏi nghiên cứu và tổng kết đóng góp của bài.",
-      output: "Kết luận cuối cùng", owner: "TV1", support: "TV10", week: "Tuần 5",
+      output: "Kết luận cuối cùng", owner: "Quang", support: "Kino", week: "27/09/2026 17:00",
       note: "Không đưa thêm luận điểm mới chưa xuất hiện ở phần kết quả.",
       src: ["S1", "S18", "S7", "S13", "S4"],
       rubric: ["Trả lời đủ và trực tiếp cả ba câu hỏi nghiên cứu ở mục 1.4",
         "Không xuất hiện luận điểm hay số liệu mới chưa từng có ở Chương 4",
         "Phân biệt rõ đóng góp của bài và hạn chế của bài",
-        "Không dùng ngôn ngữ kiểm định giả thuyết (quy ước G2)"] },
+        "Không dùng ngôn ngữ kiểm định giả thuyết"] },
 
     { ch: "Tài liệu tham khảo", id: "6.1", stt: 37, title: "Quản lý nguồn",
       task: "Chuẩn hóa thông tin bảy bài cốt lõi và các tài liệu bổ sung theo APA hoặc IEEE.",
-      output: "Danh mục tài liệu tham khảo", owner: "TV8", support: "Tất cả thành viên", week: "Tuần 5",
+      output: "Danh mục tài liệu tham khảo", owner: "Đạt", support: "Tất cả thành viên", week: "27/09/2026 17:00",
       note: "Mỗi nhận định quan trọng phải có nguồn tương ứng.",
       src: [],
       rubric: ["Thống nhất một chuẩn trích dẫn duy nhất trong toàn bài",
@@ -666,11 +687,11 @@
 
     { ch: "Biên tập tổng thể", id: "7.1", stt: 38, title: "Kiểm tra cuối",
       task: "Kiểm tra chính tả, văn phong, trích dẫn, số liệu, mục lục, định dạng và tính thống nhất.",
-      output: "Bản hoàn chỉnh để nộp", owner: "TV10", support: "TV1", week: "Tuần 5",
+      output: "Bản hoàn chỉnh để nộp", owner: "Kino", support: "Tất cả thành viên", week: "28/09/2026 20:00",
       note: "Kiểm tra lần cuối sau khi tất cả thành viên hoàn thành phần việc.",
       src: [],
-      rubric: ["Thuật ngữ dùng thống nhất toàn bài theo quy ước G1",
-        "Không còn chỗ nào gọi mệnh đề phân tích là giả thuyết (quy ước G2)",
+      rubric: ["Thuật ngữ dùng thống nhất toàn bài",
+        "Không còn chỗ nào gọi mệnh đề phân tích là giả thuyết",
         "Mọi số liệu trong bài khớp với bảng biểu và với nguồn gốc",
         "Định dạng, đánh số bảng/hình và mục lục nhất quán"] }
   ];
@@ -699,7 +720,7 @@
   });
 
   /* ---------- Goi AI qua server cua chinh ban (/api/grade tren Vercel) ---------- */
-  async function callClaude(prompt){
+  async function callAI(prompt){
     var response;
     try{
       response = await fetch("/api/grade", {
@@ -829,13 +850,13 @@
     html += '</ul></div>';
 
     html += '<div class="card"><h3>Bài viết của bạn</h3>';
-    html += '<textarea id="draftBox" placeholder="Viết bằng lời của chính bạn — viết được đến đâu thì nhờ Claude chấm đến đó...">' + escapeHtml(rec.draft || "") + '</textarea>';
+    html += '<textarea id="draftBox" placeholder="Viết bằng lời của chính bạn — viết được đến đâu thì nhờ AI chấm đến đó...">' + escapeHtml(rec.draft || "") + '</textarea>';
     html += '<div class="wordcount" id="wc">0 từ</div>';
     html += '<div class="actions"><button class="primary" id="gradeBtn">Chấm điểm &amp; gợi ý</button>';
     html += '<button class="ghost" id="clearBtn">Xoá bài này</button></div></div>';
 
     html += '<div id="fbSlot"></div>';
-    html += '<footer class="note">Bài viết của bạn không được lưu lại ở đâu cả — chỉ tồn tại trong phiên làm việc hiện tại trên trình duyệt của bạn và sẽ mất khi tải lại trang. Claude chấm dựa trên 19 nguồn nghiên cứu của nhóm và quy ước thống nhất trong file góp ý — xem tab "19 nguồn &amp; quy ước".</footer>';
+    html += '<footer class="note">Bài viết của bạn không được lưu lại ở đâu cả — chỉ tồn tại trong phiên làm việc hiện tại trên trình duyệt của bạn và sẽ mất khi tải lại trang. AI chấm dựa trên 27 nguồn nghiên cứu của nhóm và quy ước thống nhất trong file góp ý — xem tab "27 nguồn &amp; quy ước".</footer>';
 
     stageEl.innerHTML = html;
 
@@ -872,7 +893,7 @@
     slot.innerHTML = '<div class="card feedback"><div class="thinking"><span class="spinner"></span> Đang đọc và chấm bài của bạn...</div></div>';
 
     try{
-      var data = await callClaude(buildPrompt(sec, draftText));
+      var data = await callAI(buildPrompt(sec, draftText));
       var fb = normalizeFeedback(data);
       var rec = Object.assign({}, state.drafts[sec.id] || {});
       rec.draft = draftText; rec.feedback = fb; rec.updatedAt = Date.now();
@@ -881,10 +902,10 @@
     }catch(e){
       var code = e && e.code;
       var msg = "Có lỗi khi chấm bài, thử lại sau.";
-      if(code === "not_signed_in") msg = "Không gọi được Claude — hãy đăng nhập claude.ai rồi mở lại artifact trong khung xem của Claude (không mở link ra tab/trình duyệt ngoài).";
+      if(code === "not_signed_in") msg = "Không gọi được dịch vụ chấm điểm — kiểm tra lại cấu hình rồi thử lại.";
       else if(code === "rate_limited") msg = "Đang có quá nhiều lượt chấm cùng lúc, đợi một chút rồi thử lại.";
-      else if(code === "invalid_json") msg = "Claude trả lời không đúng định dạng, hãy bấm chấm lại.";
-      else if(code === "network") msg = "Không kết nối được tới Claude — kiểm tra mạng rồi thử lại.";
+      else if(code === "invalid_json") msg = "AI trả lời không đúng định dạng, hãy bấm chấm lại.";
+      else if(code === "network") msg = "Không kết nối được tới AI — kiểm tra mạng rồi thử lại.";
       slot.innerHTML = '<div class="card feedback"><div class="empty-hint">' + escapeHtml(msg) +
         '<div style="margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted)">' +
         (code ? 'mã lỗi: ' + escapeHtml(code) : 'mã lỗi: (không có)') +
@@ -923,7 +944,7 @@
     L.push("QUY TẮC TỐI THƯỢNG: TUYỆT ĐỐI KHÔNG viết hộ đoạn văn hoàn chỉnh, KHÔNG đưa câu mẫu để họ chép vào bài. Mục đích là để chính người viết tự diễn đạt bằng lời của họ. Khi thiếu ý, chỉ được GỢI Ý bằng câu hỏi mở.");
     L.push("");
     L.push("QUY ƯỚC BẮT BUỘC CỦA NHÓM (trích từ file góp ý — vi phạm quy ước này phải bị trừ điểm và nêu rõ trong phần gaps):");
-    GUIDELINES.forEach(function(g){ L.push("- [" + g.id + "] " + g.title + ": " + g.body); });
+    GUIDELINES.forEach(function(g){ L.push("- " + g.title + ": " + g.body); });
     L.push("");
     L.push("ĐẦU VIỆC ĐANG LUYỆN: " + sec.stt + "/38 — mục " + sec.id + ". " + sec.title + " (thuộc " + sec.ch + ")");
     L.push("Nội dung cần thực hiện: " + sec.task);
@@ -1017,18 +1038,12 @@
   function renderSources(){
     var keys = Object.keys(SOURCES);
     var vn = keys.filter(function(k){ return SOURCES[k].origin === "VN"; }).length;
-    var html = '<div class="crumb">CƠ SỞ ĐÁNH GIÁ</div><h2>19 nguồn nghiên cứu &amp; quy ước của nhóm</h2>';
+    var html = '<div class="crumb">CƠ SỞ ĐÁNH GIÁ</div><h2>27 nguồn nghiên cứu &amp; quy ước của nhóm</h2>';
     html += '<div class="ov-summary">';
     html += '<div class="ov-stat"><div class="num">' + keys.length + '</div><div class="lbl">Nguồn nghiên cứu</div></div>';
     html += '<div class="ov-stat"><div class="num">' + vn + '</div><div class="lbl">Nguồn Việt Nam</div></div>';
     html += '<div class="ov-stat"><div class="num">' + (keys.length - vn) + '</div><div class="lbl">Nguồn quốc tế</div></div>';
     html += '<div class="ov-stat"><div class="num">' + OUTLINE.length + '</div><div class="lbl">Đầu việc</div></div>';
-    html += '</div>';
-
-    html += '<div class="card"><h3>Quy ước bắt buộc — Claude áp dụng khi chấm mọi mục</h3>';
-    GUIDELINES.forEach(function(g){
-      html += '<div class="guide-item"><div class="gt">' + escapeHtml(g.id + ". " + g.title) + '</div><div class="gb">' + escapeHtml(g.body) + '</div></div>';
-    });
     html += '</div>';
 
     html += '<div class="card"><h3>Danh sách nguồn — dùng cho mục nào</h3><div class="src-list">';
